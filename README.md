@@ -47,3 +47,13 @@ c. The above execution will train and evaluate R-GCN, R-GCN + NBFNet, and NBFNet
    python3 script/eval_anyburl.py --data_dir data/fb15k237_v1 -r anyburl-22/fb15k237_v1
 ```
 d. The NBFNet evaluation can be obtained by running [NBFNet](https://github.com/KiddoZhu/NBFNet-PyG).
+
+
+If you make use of this code in your work, please cite the following paper:
+
+	@article{IndKGC,
+	  title={Inductive Knowledge Graph Completion with GNN and Rule.},
+	  author={Akash Anil, Victor Gutierrez Basulto, Yazmín Ibáñez-García, Steven Schockaert},
+	  journal={Yet to decide},
+	  year={2023}
+	}
