@@ -71,6 +71,7 @@ def get_num_neg(data_dir, train_ind_file, rule_graph_for_test):
 
 
 if __name__ == '__main__':
+    print('I am working')
     start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--in_dir', help='Input Directory', default='../data/fb15k237_v1')
