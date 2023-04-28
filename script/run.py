@@ -3,7 +3,7 @@ import os
 import sys
 sys.path.append(os.getcwd())
 from utils.encode_triplets import encode_train_ind
-from utils.dataset_train import create_train_graph
+from utils.dataset_train_compgcn import create_train_graph
 from utils.dataset_valid import create_valid_graph
 from utils.dataset_test import create_test_graph
 from train.train import train_test
@@ -71,7 +71,6 @@ def get_num_neg(data_dir, train_ind_file, rule_graph_for_test):
 
 
 if __name__ == '__main__':
-    print('I am working')
     start = time.time()
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--in_dir', help='Input Directory', default='../data/fb15k237_v1')
@@ -83,7 +82,7 @@ if __name__ == '__main__':
     parser.add_argument('-lr', '--learning_rate', help='Initial Learning Rate', default=0.004)
     parser.add_argument('-b', '--num_bases', help='Number of bases', default=4)
     parser.add_argument('-do', '--drop_out', help='Dropout probability', default=0.1)
-    parser.add_argument('-e', '--epoch', help='Max epochs', default=20)
+    parser.add_argument('-e', '--epoch', help='Max epochs', default=1)
     parser.add_argument('-p', '--patience', help='Patience value for early stop', default=3)
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

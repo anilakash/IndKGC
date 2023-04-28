@@ -7,8 +7,6 @@ import time
 import numpy as np
 import torch
 
-#max_rule_length = 4
-
 
 def extract_nodes(triplets):
     nodes = []
