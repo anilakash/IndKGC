@@ -110,11 +110,14 @@ def add_inverse(edges, edge_type):
         edge_in.append(e_in)
 
     for etype in edge_type:
-        etype_in = int(etype) + len(set(edge_type))
+        #etype_in = int(etype) + len(set(edge_type))
+        if int(etype) % 2 == 0:
+            etype_in = int(etype) + 1
+        else:
+            etype_in = int(etype) - 1
         edge_type_in.append(etype_in)
 
     return edge_in, edge_type_in
-
 
 
 def create_train_graph(rule_graph_for_train, max_rule_length):
@@ -167,7 +170,7 @@ def create_train_graph(rule_graph_for_train, max_rule_length):
                 triplet[1] = node_dict[triplet[1]]
 
             edges, edge_type = extract_edges(triplets)
-            len_rel_graph = len(set(edge_type))
+            #len_rel_graph = len(set(edge_type))
             # Add inverse edges and inverse edge_types
             edges, edge_type = add_inverse(edges, edge_type)
             #Extract PyG data attributes
@@ -175,7 +178,7 @@ def create_train_graph(rule_graph_for_train, max_rule_length):
             edge_index = extract_edge_index(edges)
             edge_type = torch.tensor(edge_type)
             y = torch.tensor([int(label)], dtype=torch.long)
-            data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y, len_rel_graph=len_rel_graph)
+            data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y)
             train_graph.append([data, target_rel])
 
     return train_graph

@@ -2,7 +2,8 @@ import collections
 import sys
 import os
 sys.path.append(os.getcwd())
-from model.model_concat_g_rel_emb import *
+#from model.model_concat_g_rel_emb import *
+from model.model_concat_g_rel_emb_compgcn import *
 from utils.data_loader import load_train, load_valid, load_test
 import operator
 import random
@@ -300,18 +301,19 @@ def eval_test(data_dir, test_graph, best_epoch, num_negatives, metric, nbfnet_ra
             ranking_ab_ind_nbfnet_4.append(int(nbfnet_rank_dict[4][batch_no]))
 
 
-    ranking_dict['RGCN']   = ranking_random
-    ranking_dict['RGCN_NBFNet1'] = ranking_original_nbfnet_0
-    ranking_dict['RGCN_NBFNet2'] = ranking_original_nbfnet_1
-    ranking_dict['RGCN_NBFNet3'] = ranking_original_nbfnet_2
-    ranking_dict['RGCN_NBFNet4'] = ranking_original_nbfnet_3
-    ranking_dict['RGCN_NBFNet5'] = ranking_original_nbfnet_4
+    ranking_dict['CompGCN']   = ranking_random
+    ranking_dict['CompGCN_NBFNet1'] = ranking_original_nbfnet_0
+    ranking_dict['CompGCN_NBFNet2'] = ranking_original_nbfnet_1
+    ranking_dict['CompGCN_NBFNet3'] = ranking_original_nbfnet_2
+    ranking_dict['CompGCN_NBFNet4'] = ranking_original_nbfnet_3
+    ranking_dict['CompGCN_NBFNet5'] = ranking_original_nbfnet_4
+    '''
     ranking_dict['NBFNet_NBFNet1'] = ranking_ab_ind_nbfnet_0
     ranking_dict['NBFNet_NBFNet2'] = ranking_ab_ind_nbfnet_1
     ranking_dict['NBFNet_NBFNet3'] = ranking_ab_ind_nbfnet_2
     ranking_dict['NBFNet_NBFNet4'] = ranking_ab_ind_nbfnet_3
     ranking_dict['NBFNet_NBFNet5'] = ranking_ab_ind_nbfnet_4
-
+    '''
     get_metric_score(ranking_dict, metric, num_negatives)
 
 def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nbfnet_rank_dict,
@@ -326,9 +328,11 @@ def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nb
     epoch = int(args.epoch)
     patience = int(args.patience)
     drop_prob = float(args.drop_out)
+    bias = args.bias
+    opn = args.opn
 
-    model = RGCN(hidden_channels=num_hidden_channels, num_relations=num_rel, num_node_features=num_node_features,
-                 num_bases = num_bases)
+    model = CompGCN(hidden_channels=num_hidden_channels, num_relations=num_rel, num_node_features=num_node_features,
+                 num_bases=num_bases, dropout=drop_prob, opn=opn, bias=bias)
     model = model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()

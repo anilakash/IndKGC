@@ -4,8 +4,8 @@ import sys
 sys.path.append(os.getcwd())
 from utils.encode_triplets import encode_train_ind
 from utils.dataset_train_compgcn import create_train_graph
-from utils.dataset_valid import create_valid_graph
-from utils.dataset_test import create_test_graph
+from utils.dataset_valid_compgcn import create_valid_graph
+from utils.dataset_test_compgcn import create_test_graph
 from train.train import train_test
 import time
 import pickle
@@ -82,8 +82,11 @@ if __name__ == '__main__':
     parser.add_argument('-lr', '--learning_rate', help='Initial Learning Rate', default=0.004)
     parser.add_argument('-b', '--num_bases', help='Number of bases', default=4)
     parser.add_argument('-do', '--drop_out', help='Dropout probability', default=0.1)
-    parser.add_argument('-e', '--epoch', help='Max epochs', default=1)
-    parser.add_argument('-p', '--patience', help='Patience value for early stop', default=3)
+    parser.add_argument('-e', '--epoch', help='Max epochs', default=20)
+    parser.add_argument('-p', '--patience', help='Patience value for early stop', default=10)
+    parser.add_argument('-o', '--opn', help='Compositional Operator', default='sub')
+    parser.add_argument('-bs', '--bias', help='Bias', default=False)
+
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -93,6 +96,7 @@ if __name__ == '__main__':
     num_ins = int(args.num_ins)
     max_rule_length = int(args.len_rule)
 
+    print('Arguments', args)
     path_dir = os.path.join(data_dir, 'top_%d' % num_ins + '_paths')
     # Read the path instantiations for Train, Valid, and Test data
     rule_paths_train = pickle.load(open(path_dir + '/train.pkl', 'rb'))
