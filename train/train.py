@@ -357,7 +357,7 @@ def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nb
 
         if epoch_count > patience:
             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
-            print('Using Early Stopping as improvement is same for continuously 4 epochs, No more training needed.')
+            print('Using Early Stopping as improvement is same for continuously 10 epochs, No more training needed.')
             print('>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>')
             break
 
