@@ -78,15 +78,15 @@ if __name__ == '__main__':
     parser.add_argument('-nnbf', '--num_nbfnet_runs', help='Number of NBFNet runs', default=5)
     parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)
     parser.add_argument('-l', '--len_rule', help='Max rule length or no of atoms in the body', default=4)
-    parser.add_argument('-nh', '--num_hidden', help='Dimension of hidden layers', default=32)
+    parser.add_argument('-nh', '--num_hidden', help='Dimension of hidden layers', default=64)
     parser.add_argument('-lr', '--learning_rate', help='Initial Learning Rate', default=0.004)
     parser.add_argument('-b', '--num_bases', help='Number of bases', default=4)
     parser.add_argument('-do', '--drop_out', help='Dropout probability', default=0.1)
-    parser.add_argument('-e', '--epoch', help='Max epochs', default=20)
+    parser.add_argument('-e', '--epoch', help='Max epochs', default=50)
     parser.add_argument('-p', '--patience', help='Patience value for early stop', default=10)
     parser.add_argument('-o', '--opn', help='Compositional Operator', default='sub')
     parser.add_argument('-bs', '--bias', help='Bias', default=False)
-    parser.add_argument('-a', '--act', help='Activation', default=torch.tanh)
+    parser.add_argument('-a', '--act', help='Activation', default=torch.relu)
 
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
