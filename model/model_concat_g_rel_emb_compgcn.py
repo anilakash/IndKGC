@@ -11,9 +11,9 @@ from model.compgcn_conv_basis import CompGCNConvBasis
 
 class CompGCN(torch.nn.Module):
     def __init__(self, hidden_channels, num_relations,  num_node_features, num_bases,
-                 dropout, opn, bias, num_classes = 2):
+                 dropout, act, opn, bias, num_classes = 2):
         super(CompGCN, self).__init__()
-        self.act = torch.tanh
+        #self.act = torch.tanh
         #self.num_node_features = num_node_features
         #self.hidden_channels = hidden_channels
         #self.num_rel_graph = num_rel_graph
@@ -31,9 +31,9 @@ class CompGCN(torch.nn.Module):
         self.rel_graph_emb = get_param((num_relations, num_node_features))
         torch.manual_seed(123)
         # Need to check and put all the arguments for CompGCNConv##
-        self.conv1 = CompGCNConv(num_node_features, hidden_channels, num_relations, dropout, opn, bias, self.act)
-        self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, opn, bias, self.act)
-        self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, opn, bias, self.act)
+        self.conv1 = CompGCNConv(num_node_features, hidden_channels, num_relations, dropout, act, opn, bias)
+        self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+        self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
         self.lin = Linear(2*hidden_channels, num_classes)
 
 
@@ -44,11 +44,11 @@ class CompGCN(torch.nn.Module):
         x, r = self.conv1(data.x, data.edge_index, data.edge_type, rel_embed=r)  # node_emb, rel_emb
         #print('I am working till first conv')
         #x = self.conv1(data.x, data.edge_index, data.edge_type, data.)
-        x = x.relu()
+        #x = x.relu()
         x, r = self.conv2(x, data.edge_index, data.edge_type, rel_embed=r)
         #print('I am working till 2nd conv')
         #print('2', x.shape, r.shape)
-        x = x.relu()
+        #x = x.relu()
         #print('3', x.shape, r.shape)
         x, r = self.conv3(x, data.edge_index, data.edge_type, rel_embed=r)
         #print('4', x.shape, r.shape)

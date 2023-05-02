@@ -86,6 +86,7 @@ if __name__ == '__main__':
     parser.add_argument('-p', '--patience', help='Patience value for early stop', default=10)
     parser.add_argument('-o', '--opn', help='Compositional Operator', default='sub')
     parser.add_argument('-bs', '--bias', help='Bias', default=False)
+    parser.add_argument('-a', '--act', help='Activation', default=torch.tanh)
 
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

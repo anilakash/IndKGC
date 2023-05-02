@@ -2,7 +2,7 @@ from helper import *
 from model.message_passing import MessagePassing
 
 class CompGCNConv(MessagePassing):
-	def __init__(self, in_channels, out_channels, num_rels, dropout, opn, bias, act):
+	def __init__(self, in_channels, out_channels, num_rels, dropout, act, opn, bias):
 	#def __init__(self, in_channels, out_channels, num_rels, act=lambda x:x, params=None):
 		super(self.__class__, self).__init__()
 
