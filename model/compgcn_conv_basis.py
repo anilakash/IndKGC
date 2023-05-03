@@ -2,36 +2,37 @@ from helper import *
 from model.message_passing import MessagePassing
 
 class CompGCNConvBasis(MessagePassing):
-	def __init__(self, in_channels, out_channels, num_rels, num_bases, act=lambda x:x, cache=True, params=None):
+	def __init__(self, in_channels, out_channels, num_rels, num_bases, dropout, act, opn, bias):
 		super(self.__class__, self).__init__()
 
-		self.p 			= params
+		#self.p 			= params
+		self.dropout = dropout
 		self.in_channels	= in_channels
 		self.out_channels	= out_channels
-		self.num_rels 		= num_rels
+		self.num_rels 		= num_rels # Considering whole relations
 		self.num_bases 		= num_bases
 		self.act 		= act
 		self.device		= None
-		self.cache 		= cache			# Should be False for graph classification tasks
+		self.cache 		= False			# Should be False for graph classification tasks
+		self.opn = opn
+		self.bias = bias
 
 		self.w_loop		= get_param((in_channels, out_channels));
 		self.w_in		= get_param((in_channels, out_channels));
 		self.w_out		= get_param((in_channels, out_channels));
 
 		self.rel_basis 		= get_param((self.num_bases, in_channels))
-		self.rel_wt 		= get_param((self.num_rels*2, self.num_bases))
-		self.w_rel 		= get_param((in_channels, out_channels))
+		self.rel_wt 		= get_param((self.num_rels, self.num_bases))
+		self.w_rel 			= get_param((in_channels, out_channels))
 		self.loop_rel 		= get_param((1, in_channels));
 
-		self.drop		= torch.nn.Dropout(self.p.dropout)
+		self.drop		= torch.nn.Dropout(self.dropout)
 		self.bn			= torch.nn.BatchNorm1d(out_channels)
 		
-		self.in_norm, self.out_norm,
-		self.in_index, self.out_index,
-		self.in_type, self.out_type,
-		self.loop_index, self.loop_type = None, None, None, None, None, None, None, None
+		self.in_norm, self.out_norm, self.in_index, self.out_index, self.in_type, self.out_type, \
+			self.loop_index, self.loop_type = None, None, None, None, None, None, None, None
 
-		if self.p.bias: self.register_parameter('bias', Parameter(torch.zeros(out_channels)))
+		#if self.p.bias: self.register_parameter('bias', Parameter(torch.zeros(out_channels)))
 
 	def forward(self, x, edge_index, edge_type, edge_norm=None, rel_embed=None):
 		if self.device is None:
@@ -58,15 +59,16 @@ class CompGCNConvBasis(MessagePassing):
 		out_res		= self.propagate('add', self.out_index,  x=x, edge_type=self.out_type,  rel_embed=rel_embed, edge_norm=self.out_norm,	mode='out')
 		out		= self.drop(in_res)*(1/3) + self.drop(out_res)*(1/3) + loop_res*(1/3)
 
-		if self.p.bias: out = out + self.bias
-		if self.b_norm: out = self.bn(out)
+		if self.bias: out = out + self.bias
+		out = self.bn(out)     # Just made consistent with compgcn_conv
+		#if self.b_norm: out = self.bn(out)
 
 		return self.act(out), torch.matmul(rel_embed, self.w_rel)[:-1]
 
 	def rel_transform(self, ent_embed, rel_embed):
-		if   self.p.opn == 'corr': 	trans_embed  = ccorr(ent_embed, rel_embed)
-		elif self.p.opn == 'sub': 	trans_embed  = ent_embed - rel_embed
-		elif self.p.opn == 'mult': 	trans_embed  = ent_embed * rel_embed
+		if   self.opn == 'corr': 	trans_embed  = ccorr(ent_embed, rel_embed)
+		elif self.opn == 'sub': 	trans_embed  = ent_embed - rel_embed
+		elif self.opn == 'mult': 	trans_embed  = ent_embed * rel_embed
 		else: raise NotImplementedError
 
 		return trans_embed

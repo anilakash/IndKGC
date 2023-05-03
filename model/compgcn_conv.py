@@ -18,6 +18,7 @@ class CompGCNConv(MessagePassing):
 		self.w_loop		= get_param((in_channels, out_channels))
 		self.w_in		= get_param((in_channels, out_channels))
 		self.w_out		= get_param((in_channels, out_channels))
+
 		self.w_rel 		= get_param((in_channels, out_channels))
 		self.loop_rel 		= get_param((1, in_channels));
 
@@ -44,11 +45,8 @@ class CompGCNConv(MessagePassing):
 		self.in_norm     = self.compute_norm(self.in_index,  num_ent)
 		self.out_norm    = self.compute_norm(self.out_index, num_ent)
 
-		#print('Propagating for in_res')
 		in_res		= self.propagate('add', self.in_index,   x=x, edge_type=self.in_type,   rel_embed=rel_embed, edge_norm=self.in_norm, 	mode='in')
-		#print('Propagating for loop_res')
 		loop_res	= self.propagate('add', self.loop_index, x=x, edge_type=self.loop_type, rel_embed=rel_embed, edge_norm=None, mode='loop')
-		#print('Propagating for out_res')
 		out_res		= self.propagate('add', self.out_index,  x=x, edge_type=self.out_type,  rel_embed=rel_embed, edge_norm=self.out_norm,	mode='out')
 		out		= self.drop(in_res)*(1/3) + self.drop(out_res)*(1/3) + loop_res*(1/3)
 		# The above out is the node embeddings
@@ -68,11 +66,7 @@ class CompGCNConv(MessagePassing):
 
 	def message(self, x_j, edge_type, rel_embed, edge_norm, mode):
 		weight 	= getattr(self, 'w_{}'.format(mode))
-		#print(edge_type)
-		#print('---------------------------------------------')
 		rel_emb = torch.index_select(rel_embed, 0, edge_type)
-		#print('rel_emb in conv', rel_emb.shape)
-		#print('---------------------------------------------')
 		xj_rel  = self.rel_transform(x_j, rel_emb)
 		out	= torch.mm(xj_rel, weight)
 
