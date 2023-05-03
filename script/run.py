@@ -80,7 +80,7 @@ if __name__ == '__main__':
     parser.add_argument('-l', '--len_rule', help='Max rule length or no of atoms in the body', default=4)
     parser.add_argument('-nh', '--num_hidden', help='Dimension of hidden layers', default=64)
     parser.add_argument('-lr', '--learning_rate', help='Initial Learning Rate', default=0.004)
-    parser.add_argument('-b', '--num_bases', help='Number of bases', default=50)
+    parser.add_argument('-b', '--num_bases', help='Number of bases', default=-1)
     parser.add_argument('-do', '--drop_out', help='Dropout probability', default=0.1)
     parser.add_argument('-e', '--epoch', help='Max epochs', default=50)
     parser.add_argument('-p', '--patience', help='Patience value for early stop', default=20)
