@@ -34,7 +34,7 @@ class CompGCN(torch.nn.Module):
         self.conv1 = CompGCNConv(num_node_features, hidden_channels, num_relations, dropout, act, opn, bias)
         self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
         self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-        self.lin = Linear(hidden_channels, num_classes)
+        self.lin = Linear(3*hidden_channels, num_classes)
 
 
     def forward(self, data, rel_labels, drop_prob):
@@ -54,9 +54,9 @@ class CompGCN(torch.nn.Module):
         #print('4', x.shape, r.shape)
         #print('===============================================================')
         x = global_mean_pool(x, data.batch)
-        # Dot product of x and relation embedding
-        x = x * rel_embs
-        #x = F.dropout(x, p=drop_prob, training=self.training)
+        g_dot_rel = x * rel_embs  # Dot product between graph embedding and relation embedding
+        dist_g_rel = (x - rel_embs) * (x - rel_embs)
+        x = torch.cat([g_dot_rel, dist_g_rel, x], dim=1)
         x = self.lin(x)
 
         return x
