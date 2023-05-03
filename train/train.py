@@ -2,8 +2,8 @@ import collections
 import sys
 import os
 sys.path.append(os.getcwd())
-#from model.model_concat_g_rel_emb import *
-from model.model_concat_g_rel_emb_compgcn import *
+from model.model_proj_g_rel_emb_compgcn import *
+#from model.model_concat_g_rel_emb_compgcn import *
 from utils.data_loader import load_train, load_valid, load_test
 import operator
 import random
