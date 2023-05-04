@@ -26,6 +26,8 @@ def extract_edges(triplets):
     return edges, edge_type
 
 def rename_nodes(nodes, target_nodes):
+    #print('nodes', nodes)
+    #print('target', target_nodes)
     renamed_nodes = {}
     num = 2
     for node in nodes:
@@ -36,7 +38,9 @@ def rename_nodes(nodes, target_nodes):
         else:
             renamed_nodes[node] = num
             num+=1
+
     #print('renamed nodes ', renamed_nodes)
+    #print('-------------------')
     renamed_nodes = dict(sorted(renamed_nodes.items(), key=lambda item: item[1]))
     #print('renamed nodes ', renamed_nodes)
     return renamed_nodes
@@ -86,6 +90,7 @@ def get_node_features(G, target_nodes, nodes, max_rule_length):
     else:
         return node_dict, node_features
 
+
 def extract_edge_index(edges):
     first_node_list = []
     second_node_list = []
@@ -99,6 +104,8 @@ def extract_edge_index(edges):
 def get_node_features_as_tensors(node_features):
     node_features = np.array(node_features)
     node_features = torch.tensor(node_features, dtype=torch.float)
+    #print('node features', node_features)
+    #print('----------------------------------------')
     return node_features
 
 def add_inverse(edges, edge_type):

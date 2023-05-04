@@ -331,9 +331,17 @@ def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nb
     bias = args.bias
     opn = args.opn
     act = args.act
+    concat1 = args.concat1
+    concat2 = args.concat2
+    concat3 = args.concat3
+    concat4 = args.concat4
+    projection1 = args.projection1
+    projection2 = args.projection2
+
 
     model = CompGCN(hidden_channels=num_hidden_channels, num_relations=num_rel, num_node_features=num_node_features,
-                 num_bases=num_bases, dropout=drop_prob, act=act, opn=opn, bias=bias)
+                 num_bases=num_bases, dropout=drop_prob, act=act, opn=opn, bias=bias, concat1=concat1, concat2=concat2,
+                    concat3=concat3, concat4=concat4, projection1=projection1, projection2=projection2)
     model = model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
