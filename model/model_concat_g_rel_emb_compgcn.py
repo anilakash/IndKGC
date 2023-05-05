@@ -91,9 +91,6 @@ class CompGCN(torch.nn.Module):
         else:
             print('Not Implemented...')
 
-        # Concatenate the graph embedding and the target relation embeddings
-        #x = torch.cat([x, rel_embs, h_batch, t_batch], dim=1)
-
 
         return x
 
