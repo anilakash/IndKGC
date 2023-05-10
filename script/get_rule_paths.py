@@ -21,7 +21,7 @@ def rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers):
         print('Rule path exist for Train.')
     else:
         print('Extracting rule path instantiation for train, it may take a while...')
-        rule_paths_train = triplet_rule_paths(train, rules, h2r2t, num_ins, workers)
+        rule_paths_train = triplet_rule_paths(train, rules, h2r2t, num_ins, workers) # Work at this
         print('Writing the rule paths for train')
         out_file = open(os.path.join(path_dir, 'train.pkl'), 'wb')
         pickle.dump(rule_paths_train, out_file)
