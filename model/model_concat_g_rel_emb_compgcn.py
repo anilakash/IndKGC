@@ -3,7 +3,7 @@ import torch.nn as nn
 from torch.nn import Linear
 import torch.nn.functional as F
 from torch_geometric.nn import RGCNConv
-from torch_geometric.nn import global_mean_pool
+from torch_geometric.nn import global_mean_pool, global_max_pool
 from helper import *
 from model.compgcn_conv import CompGCNConv
 from model.compgcn_conv_basis import CompGCNConvBasis
@@ -74,7 +74,8 @@ class CompGCN(torch.nn.Module):
 
         h_batch = torch.stack(h_batch)    # head embedding
         t_batch = torch.stack(t_batch)    # tail embedding
-        x = global_mean_pool(x, data.batch)  # Graph Embedding
+        #x = global_mean_pool(x, data.batch)  # Graph Embedding
+        x = global_max_pool(x, data.batch)  # Graph Embedding
         rel_embs = torch.index_select(r, 0, rel_labels)   # Relation Embedding
         #diff_h_t = (h_batch - t_batch) * (h_batch - t_batch)
 
