@@ -34,16 +34,16 @@ class CompGCN(torch.nn.Module):
         if self.num_bases > 0:
             self.conv1 = CompGCNConvBasis(num_node_features, hidden_channels, num_relations, self.num_bases,
                                           dropout, act, opn, bias)
-            self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            #self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            #self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv4 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.lin = Linear(2 * hidden_channels, num_classes)
         else:
             self.conv1 = CompGCNConv(num_node_features, hidden_channels, num_relations, dropout, act, opn, bias)
-            self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            #self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            #self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv4 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
@@ -58,8 +58,8 @@ class CompGCN(torch.nn.Module):
     def forward(self, data, rel_labels, drop_prob):
         r = self.rel_graph_emb
         x, r = self.conv1(data.x, data.edge_index, data.edge_type, rel_embed=r)  # node_emb, rel_emb
-        x, r = self.conv2(x, data.edge_index, data.edge_type, rel_embed=r)
-        x, r = self.conv3(x, data.edge_index, data.edge_type, rel_embed=r)
+        #x, r = self.conv2(x, data.edge_index, data.edge_type, rel_embed=r)
+        #x, r = self.conv3(x, data.edge_index, data.edge_type, rel_embed=r)
         #x, r = self.conv4(x, data.edge_index, data.edge_type, rel_embed=r)
         #x, r = self.conv5(x, data.edge_index, data.edge_type, rel_embed=r)
         #x, r = self.conv6(x, data.edge_index, data.edge_type, rel_embed=r)
