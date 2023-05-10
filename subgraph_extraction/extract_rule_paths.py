@@ -104,8 +104,8 @@ def extract_path(args):
             elif con not in rule_list_for_triplet[triplet_key] and tail == con[0] and cnt_tail < 4:
                 rule_list_for_triplet[triplet_key].append(con)
                 cnt_tail += 1
-        print('cnt_head', cnt_head)
-        print('cnt_tail', cnt_tail)
+        #print('cnt_head', cnt_head)
+        #print('cnt_tail', cnt_tail)
     return rule_list_for_triplet
 
 def triplet_rule_paths(train, rules, h2r2t, num_ins, workers):
