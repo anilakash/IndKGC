@@ -83,7 +83,7 @@ def get_node_features(G, target_nodes, nodes, max_rule_length):
         renamed_node_double_radius = rename_double_radius(node_double_radius, node_dict)
 
         for key, val in renamed_node_double_radius.items():
-            val = np.concatenate((one_hot(val[0], max_rule_length), one_hot(val[1], max_rule_length)), axis=0)
+            val = np.concatenate((one_hot(val[0], max_rule_length+2), one_hot(val[1], max_rule_length+2)), axis=0)
             node_features.append(val)
         return node_dict, node_features
     else:

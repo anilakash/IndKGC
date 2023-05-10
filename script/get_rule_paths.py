@@ -21,7 +21,7 @@ def rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers):
         print('Rule path exist for Train.')
     else:
         print('Extracting rule path instantiation for train, it may take a while...')
-        rule_paths_train = triplet_rule_paths(train, rules, h2r2t, num_ins, workers) # Work at this
+        rule_paths_train = triplet_rule_paths(train, rules, h2r2t, num_ins, workers)
         print('Writing the rule paths for train')
         out_file = open(os.path.join(path_dir, 'train.pkl'), 'wb')
         pickle.dump(rule_paths_train, out_file)
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--data', help='Data Directory', default='../data/fb15k237_v1')
     parser.add_argument('-r', '--rule', help='Rule Directory', default='../anyburl-22/fb15k237_v1')
-    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)
+    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=50)
     parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=1)
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
 

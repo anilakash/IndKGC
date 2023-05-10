@@ -321,7 +321,7 @@ def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nb
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     print(f"Device: '{device}'")
     metric = ['mrr', 'hits@1', 'hits@3', 'hits@10', 'hits@10_50']
-    num_node_features = int(args.len_rule)*2
+    num_node_features = int(args.len_rule)*2+4
     num_hidden_channels = int(args.num_hidden)
     lr = float(args.learning_rate)
     num_bases = int(args.num_bases)
