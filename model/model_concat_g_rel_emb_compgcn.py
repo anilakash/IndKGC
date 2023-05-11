@@ -37,7 +37,7 @@ class CompGCN(torch.nn.Module):
             self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv4 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.lin = Linear(2 * hidden_channels, num_classes)
         else:
@@ -45,7 +45,7 @@ class CompGCN(torch.nn.Module):
             self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv4 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             if self.concat2:
                 self.lin = Linear(4*hidden_channels, num_classes) # con(G, R, H, T)
@@ -61,7 +61,7 @@ class CompGCN(torch.nn.Module):
         x, r = self.conv2(x, data.edge_index, data.edge_type, rel_embed=r)
         x, r = self.conv3(x, data.edge_index, data.edge_type, rel_embed=r)
         x, r = self.conv4(x, data.edge_index, data.edge_type, rel_embed=r)
-        x, r = self.conv5(x, data.edge_index, data.edge_type, rel_embed=r)
+        #x, r = self.conv5(x, data.edge_index, data.edge_type, rel_embed=r)
         #x, r = self.conv6(x, data.edge_index, data.edge_type, rel_embed=r)
 
         graph_splits = torch.bincount(data.batch).tolist()
@@ -74,8 +74,8 @@ class CompGCN(torch.nn.Module):
 
         h_batch = torch.stack(h_batch)    # head embedding
         t_batch = torch.stack(t_batch)    # tail embedding
-        #x = global_mean_pool(x, data.batch)  # Graph Embedding
-        x = global_max_pool(x, data.batch)  # Graph Embedding
+        x = global_mean_pool(x, data.batch)  # Graph Embedding
+        #x = global_max_pool(x, data.batch)  # Graph Embedding
         rel_embs = torch.index_select(r, 0, rel_labels)   # Relation Embedding
         #diff_h_t = (h_batch - t_batch) * (h_batch - t_batch)
 
