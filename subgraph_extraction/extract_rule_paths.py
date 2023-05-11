@@ -96,16 +96,38 @@ def extract_path(args):
         #print('Length of context is', len(context))
         cnt_head = 0
         cnt_tail = 0
-        for i in range(len(context)):
+        unique_con = []
+        #print('rule_list_for_triplet', rule_list_for_triplet[triplet_key])
+        for i in range(1000):
             con = random.choice(context)
-            if con not in rule_list_for_triplet[triplet_key] and head == con[0] and cnt_head < 4:
+            #unique_con.add(con)
+            if cnt_head >= 4 or len(unique_con)==len(context):
+                break
+            elif con not in rule_list_for_triplet[triplet_key] and head == con[0]:
                 rule_list_for_triplet[triplet_key].append(con)
-                cnt_head+=1
-            elif con not in rule_list_for_triplet[triplet_key] and tail == con[0] and cnt_tail < 4:
+                cnt_head += 1
+            if con not in unique_con:
+                unique_con.append(con)
+
+        unique_con = []   # For tail's context
+
+        for i in range(1000):
+            con = random.choice(context)
+            #unique_con.add(con)
+            if cnt_tail >= 4 or len(unique_con)==len(context):
+                break
+            elif con not in rule_list_for_triplet[triplet_key] and tail == con[0]:
                 rule_list_for_triplet[triplet_key].append(con)
                 cnt_tail += 1
+            if con not in unique_con:
+                unique_con.append(con)
+
+        #print('rule_list_for_triplet', rule_list_for_triplet[triplet_key])
+        #print('head and tail', head, 'and', tail)
+        #print('context', context)
         #print('cnt_head', cnt_head)
         #print('cnt_tail', cnt_tail)
+        #print('---------------------------------------------------------------')
     return rule_list_for_triplet
 
 def triplet_rule_paths(train, rules, h2r2t, num_ins, workers):
