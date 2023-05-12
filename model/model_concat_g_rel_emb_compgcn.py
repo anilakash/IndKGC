@@ -12,7 +12,7 @@ from model.compgcn_conv_basis import CompGCNConvBasis
 class CompGCN(torch.nn.Module):
     def __init__(self, hidden_channels, num_relations,  num_node_features, num_bases,
                  dropout, act, opn, bias, concat1, concat2, concat3, concat4,
-                 projection1, projection2, num_classes = 2):
+                 projection1, projection2, tail_only, num_classes = 2):
         super(CompGCN, self).__init__()
 
         self.num_bases = num_bases
@@ -22,6 +22,7 @@ class CompGCN(torch.nn.Module):
         self.concat4 = concat4
         self.projection1 = projection1
         self.projection2 = projection2
+        self.tail_only = tail_only
 
         #self.rel_emb = nn.Embedding(num_relations, hidden_channels, sparse=False)
 
@@ -49,7 +50,7 @@ class CompGCN(torch.nn.Module):
             #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             if self.concat2:
                 self.lin = Linear(4*hidden_channels, num_classes) # con(G, R, H, T)
-            elif self.projection1 or self.projection2:  # G*R or G * |R - |H-T||
+            elif self.projection1 or self.projection2 or self.tail_only:  # G*R or G * |R - |H-T|| or tail_only
                 self.lin = Linear(hidden_channels, num_classes)
             else:  # Other concatenations
                 self.lin = Linear(2 * hidden_channels, num_classes)
@@ -98,9 +99,10 @@ class CompGCN(torch.nn.Module):
         elif self.projection2:
             x = torch.cat([x * (rel_embs - h_batch - t_batch)], dim=1)
             x = self.lin(x)
+        elif self.tail_only:
+            x = t_batch
+            x = self.lin(x)
         else:
             print('Not Implemented...')
-
-
         return x
 

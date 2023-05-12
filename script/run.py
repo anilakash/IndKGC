@@ -76,7 +76,7 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--in_dir', help='Input Directory', default='../data/fb15k237_v1')
     parser.add_argument('-m', '--model_run', help='Iteration num of Model', default='run_1_model')
     parser.add_argument('-nnbf', '--num_nbfnet_runs', help='Number of NBFNet runs', default=5)
-    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=1000)
+    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)
     parser.add_argument('-l', '--len_rule', help='Max rule length or no of atoms in the body', default=4)
     parser.add_argument('-nh', '--num_hidden', help='Dimension of hidden layers', default=32)
     parser.add_argument('-lr', '--learning_rate', help='Initial Learning Rate', default=0.001)
@@ -92,7 +92,8 @@ if __name__ == '__main__':
     parser.add_argument('-c3', '--concat3', help='Concatenate Graph Emb with Projection of |Tail-Head| on Rel Emb ', default=False)
     parser.add_argument('-c4', '--concat4', help='Concatenate Graph Emb with Projection of |Head * Tail| on Rel Emb ', default=False)
     parser.add_argument('-proj1', '--projection1', help='Graph Embedding * Rel Emb ', default=False) # 1
-    parser.add_argument('-proj2', '--projection2', help='Graph Embedding * |Rel Emb - |Head - Tail| |', default=True)
+    parser.add_argument('-proj2', '--projection2', help='Graph Embedding * |Rel Emb - |Head - Tail| |', default=False)
+    parser.add_argument('-t', '--tail_only', help='Use only the tail embedding', default=True)
 
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
