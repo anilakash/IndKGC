@@ -100,7 +100,7 @@ class CompGCN(torch.nn.Module):
             x = torch.cat([x * (rel_embs - h_batch - t_batch)], dim=1)
             x = self.lin(x)
         elif self.tail_only:
-            x = t_batch
+            x = torch.cat([rel_embs, t_batch], dim=1)
             x = self.lin(x)
         else:
             print('Not Implemented...')
