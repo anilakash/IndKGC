@@ -94,6 +94,7 @@ if __name__ == '__main__':
     parser.add_argument('-proj1', '--projection1', help='Graph Embedding * Rel Emb ', default=False) # 1
     parser.add_argument('-proj2', '--projection2', help='Graph Embedding * |Rel Emb - |Head - Tail| |', default=False)
     parser.add_argument('-t', '--tail_only', help='Use only the tail embedding', default=True)
+    parser.add_argument('-out', '--out', help='Out path where rule instantiations saved', default='_paths_context_0_hop_1')
 
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -103,9 +104,10 @@ if __name__ == '__main__':
     num_nbfnet_runs = int(args.num_nbfnet_runs)
     num_ins = int(args.num_ins)
     max_rule_length = int(args.len_rule)
+    out_path = args.out
 
     print('Arguments', args)
-    path_dir = os.path.join(data_dir, 'top_%d' % num_ins + '_paths')
+    path_dir = os.path.join(data_dir, 'top_%d' % num_ins + out_path)
     # Read the path instantiations for Train, Valid, and Test data
     rule_paths_train = pickle.load(open(path_dir + '/train.pkl', 'rb'))
     rule_paths_valid = pickle.load(open(path_dir + '/valid.pkl', 'rb'))
