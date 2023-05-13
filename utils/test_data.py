@@ -48,12 +48,12 @@ def encode_test(test_data, rel2id, entity2id_train): #Same for test_ind
     return encoded_test_batch
 
 
-def get_rule_paths_test_ind(test_data, rel2id, entity2id_train, num_ins, rules, h2r2t, workers):
+def get_rule_paths_test_ind(test_data, rel2id, entity2id_train, num_ins, rules, h2r2t, workers, num_con):
     test = encode_test(test_data, rel2id, entity2id_train)
     test = put_labels(test)
     rule_path_for_test = {}
     for key, test_batch in test.items():
-        rule_paths_test_batch = triplet_rule_paths(test_batch, rules, h2r2t, num_ins, workers)
+        rule_paths_test_batch = triplet_rule_paths(test_batch, rules, h2r2t, num_ins, workers, num_con)
         rule_path_for_test[key] = rule_paths_test_batch
     return rule_path_for_test
 

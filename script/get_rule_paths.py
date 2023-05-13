@@ -13,7 +13,7 @@ import pickle
 import argparse
 
 
-def rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers, out_path):
+def rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers, out_path, num_con):
     path_dir = os.path.join(data_dir, 'top_%d' % num_ins + out_path)
     if not os.path.exists(path_dir):
         os.mkdir(path_dir)
@@ -21,12 +21,12 @@ def rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers, out_path):
         print('Rule path exist for Train.')
     else:
         print('Extracting rule path instantiation for train, it may take a while...')
-        rule_paths_train = triplet_rule_paths(train, rules, h2r2t, num_ins, workers)
+        rule_paths_train = triplet_rule_paths(train, rules, h2r2t, num_ins, workers, num_con)
         print('Writing the rule paths for train')
         out_file = open(os.path.join(path_dir, 'train.pkl'), 'wb')
         pickle.dump(rule_paths_train, out_file)
 
-def rule_paths_valid(data_dir, valid, rules, h2r2t, num_ins, workers, out_path):
+def rule_paths_valid(data_dir, valid, rules, h2r2t, num_ins, workers, out_path, num_con):
     path_dir = os.path.join(data_dir, 'top_%d' % num_ins + out_path)
     if not os.path.exists(path_dir):
         os.mkdir(path_dir)
@@ -34,12 +34,12 @@ def rule_paths_valid(data_dir, valid, rules, h2r2t, num_ins, workers, out_path):
         print('Rule path exist for Valid.')
     else:
         print('Extracting rule path instantiation for Valid, it may take a while...')
-        rule_paths_valid = triplet_rule_paths(valid, rules, h2r2t, num_ins, workers)
+        rule_paths_valid = triplet_rule_paths(valid, rules, h2r2t, num_ins, workers, num_con)
         print('Writing the rule paths for Valid')
         out_file = open(os.path.join(path_dir, 'valid.pkl'), 'wb')
         pickle.dump(rule_paths_valid, out_file)
 
-def rule_paths_test(data_dir, test_batch_triplets, rel2id, entity2id, num_ins, rules, h2r2t, workers, out_path):
+def rule_paths_test(data_dir, test_batch_triplets, rel2id, entity2id, num_ins, rules, h2r2t, workers, out_path, num_con):
     path_dir = os.path.join(data_dir, 'top_%d' % num_ins + out_path)
     if not os.path.exists(path_dir):
         os.mkdir(path_dir)
@@ -48,7 +48,7 @@ def rule_paths_test(data_dir, test_batch_triplets, rel2id, entity2id, num_ins, r
     else:
         print('Extracting rule path instantiation for Test, it may take a while...')
         rule_paths_test = get_rule_paths_test_ind(test_batch_triplets, rel2id, entity2id, num_ins,
-                                                  rules, h2r2t, workers)
+                                                  rules, h2r2t, workers, num_con)
         print('Writing the rule paths for Test')
         out_file = open(os.path.join(path_dir, 'test.pkl'), 'wb')
         pickle.dump(rule_paths_test, out_file)
@@ -59,10 +59,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--data', help='Data Directory', default='../data/fb15k237_v1')
     parser.add_argument('-r', '--rule', help='Rule Directory', default='../anyburl-22/fb15k237_v1')
-    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=50)
-    parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=1)
+    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)   # 5 and 1000
+    parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=10)  # Fix to 10
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
-    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_')
+    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_4_hop_1') # Need Perm
+    parser.add_argument('-nc', '--num_con', help='No of Context', default=0)  # Need perm
 
     args = parser.parse_args()
     data_dir = args.data
@@ -71,6 +72,7 @@ if __name__ == '__main__':
     num_neg = int(args.num_neg)
     workers = int(args.workers)
     out_path = args.out
+    num_con = int(args.num_con)
 
     rule_file = open(os.path.join(rule_dir, 'rules'))
     train_pos_file = open(os.path.join(data_dir, 'train.txt'))
@@ -89,15 +91,16 @@ if __name__ == '__main__':
     val_pos, val_neg = put_labels(val_pos, val_neg)
     valid = val_pos + val_neg
 
-    rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers, out_path)
-    rule_paths_valid(data_dir, valid, rules, h2r2t, num_ins, workers, out_path)
+    rule_paths_train(data_dir, train, rules, h2r2t, num_ins, workers, out_path, num_con)
+    rule_paths_valid(data_dir, valid, rules, h2r2t, num_ins, workers, out_path, num_con)
     # Processing Test data
     # Reading fact graph for test
     train_ind_file = open(os.path.join(data_dir, 'train_ind.txt'))
     train_ind, entity2id, rel2id = encode_train_ind(data_dir, train_ind_file)
     h2r2t = entity2rel2entity(train_ind)
     test_batch_triplets = generate_batch_triplets(rule_dir, 'test_preds')
-    rule_paths_test(data_dir, test_batch_triplets, rel2id, entity2id, num_ins, rules, h2r2t, workers, out_path)
+    rule_paths_test(data_dir, test_batch_triplets, rel2id, entity2id, num_ins, rules, h2r2t, workers,
+                    out_path, num_con)
 
     end = time.time()
     print('Total time taken in extracting rule path instantiations: ', end - start, ' Secs.')

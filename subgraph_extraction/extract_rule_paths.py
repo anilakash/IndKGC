@@ -71,7 +71,7 @@ def get_context(head, tail, h2r2t):   # One-hop context
 
 def extract_path(args):
     rule_list_for_triplet = defaultdict(list)
-    lines, rules, h2r2t, num_ins = args
+    lines, rules, h2r2t, num_ins, num_con = args
     triplet, label = lines[0], lines[1][0]
     head, tail, rel = triplet[0], triplet[1], triplet[2]
     triplet_key = str(head) + '\t' + str(tail) + '\t' + str(rel) + '\t' + str(label)
@@ -92,7 +92,7 @@ def extract_path(args):
         else:
             break
 
-    if num_paths > 0:
+    if num_paths > 0 and num_con > 0:
         #print('Length of context is', len(context))
         cnt_head = 0
         cnt_tail = 0
@@ -101,7 +101,7 @@ def extract_path(args):
         for i in range(1000):
             con = random.choice(context)
             #unique_con.add(con)
-            if cnt_head >= 4 or len(unique_con)==len(context):
+            if cnt_head >= num_con or len(unique_con)==len(context):
                 break
             elif con not in rule_list_for_triplet[triplet_key] and head == con[0]:
                 rule_list_for_triplet[triplet_key].append(con)
@@ -114,7 +114,7 @@ def extract_path(args):
         for i in range(1000):
             con = random.choice(context)
             #unique_con.add(con)
-            if cnt_tail >= 4 or len(unique_con)==len(context):
+            if cnt_tail >= num_con or len(unique_con)==len(context):
                 break
             elif con not in rule_list_for_triplet[triplet_key] and tail == con[0]:
                 rule_list_for_triplet[triplet_key].append(con)
@@ -130,11 +130,11 @@ def extract_path(args):
         #print('---------------------------------------------------------------')
     return rule_list_for_triplet
 
-def triplet_rule_paths(train, rules, h2r2t, num_ins, workers):
+def triplet_rule_paths(train, rules, h2r2t, num_ins, workers, num_con):
     args = []
     rule_paths_dict = defaultdict(list)
     for lines in train:
-        args.append([lines, rules, h2r2t, num_ins])
+        args.append([lines, rules, h2r2t, num_ins, num_con])
     n_proc = workers
     pool = Pool(n_proc)
     rule_paths = pool.map(extract_path, args)
