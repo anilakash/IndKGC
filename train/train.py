@@ -331,6 +331,7 @@ def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nb
     bias = args.bias
     opn = args.opn
     act = args.act
+    concat0 = args.concat0
     concat1 = args.concat1
     concat2 = args.concat2
     concat3 = args.concat3
@@ -341,8 +342,9 @@ def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nb
 
 
     model = CompGCN(hidden_channels=num_hidden_channels, num_relations=num_rel, num_node_features=num_node_features,
-                 num_bases=num_bases, dropout=drop_prob, act=act, opn=opn, bias=bias, concat1=concat1, concat2=concat2,
-                    concat3=concat3, concat4=concat4, projection1=projection1, projection2=projection2, tail_only=tail_only)
+                 num_bases=num_bases, dropout=drop_prob, act=act, opn=opn, bias=bias, concat0=concat0, concat1=concat1,
+                    concat2=concat2, concat3=concat3, concat4=concat4, projection1=projection1,
+                    projection2=projection2, tail_only=tail_only)
     model = model.to(device)
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()

@@ -11,11 +11,12 @@ from model.compgcn_conv_basis import CompGCNConvBasis
 
 class CompGCN(torch.nn.Module):
     def __init__(self, hidden_channels, num_relations,  num_node_features, num_bases,
-                 dropout, act, opn, bias, concat1, concat2, concat3, concat4,
+                 dropout, act, opn, bias, concat0, concat1, concat2, concat3, concat4,
                  projection1, projection2, tail_only, num_classes = 2):
         super(CompGCN, self).__init__()
 
         self.num_bases = num_bases
+        self.concat0 = concat0
         self.concat1 = concat1
         self.concat2 = concat2
         self.concat3 = concat3
@@ -80,8 +81,10 @@ class CompGCN(torch.nn.Module):
         rel_embs = torch.index_select(r, 0, rel_labels)   # Relation Embedding
         #diff_h_t = (h_batch - t_batch) * (h_batch - t_batch)
 
-
-        if self.concat1:
+        if self.concat0:
+            x = torch.cat([t_batch, rel_embs], dim=1)
+            x = self.lin(x)
+        elif self.concat1:
             x = torch.cat([x, rel_embs], dim=1)
             x = self.lin(x)
         elif self.concat2:

@@ -87,13 +87,14 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--opn', help='Compositional Operator', default='sub')
     parser.add_argument('-bs', '--bias', help='Bias', default=False)
     parser.add_argument('-a', '--act', help='Activation', default=torch.relu)
+    parser.add_argument('-c0', '--concat0', help='Concatenate Tail Emb with Rel Emb', default=True)
     parser.add_argument('-c1', '--concat1', help='Concatenate Graph Emb with Rel Emb', default=False) #2
     parser.add_argument('-c2', '--concat2', help='Concatenate Graph Emb, Rel Emb, Head, Tail', default=False) #4
     parser.add_argument('-c3', '--concat3', help='Concatenate Graph Emb with Projection of |Tail-Head| on Rel Emb ', default=False)
     parser.add_argument('-c4', '--concat4', help='Concatenate Graph Emb with Projection of |Head * Tail| on Rel Emb ', default=False)
     parser.add_argument('-proj1', '--projection1', help='Graph Embedding * Rel Emb ', default=False) # 1
     parser.add_argument('-proj2', '--projection2', help='Graph Embedding * |Rel Emb - |Head - Tail| |', default=False)
-    parser.add_argument('-t', '--tail_only', help='Use only the tail embedding', default=True)
+    parser.add_argument('-t', '--tail_only', help='Use only the tail embedding', default=False)
     parser.add_argument('-out', '--out', help='Out path where rule instantiations saved', default='_paths_context_0_hop_1')
 
     # Get the device
