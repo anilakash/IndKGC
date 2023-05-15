@@ -1,9 +1,7 @@
 import torch
 import torch.nn as nn
 from torch.nn import Linear
-import torch.nn.functional as F
-from torch_geometric.nn import RGCNConv
-from torch_geometric.nn import global_mean_pool, global_max_pool
+from torch_geometric.nn import global_mean_pool
 from helper import *
 from model.compgcn_conv import CompGCNConv
 from model.compgcn_conv_basis import CompGCNConvBasis
