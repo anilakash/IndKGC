@@ -37,16 +37,16 @@ class CompGCN(torch.nn.Module):
             self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv4 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.lin = Linear(2 * hidden_channels, num_classes)
         else:
             self.conv1 = CompGCNConv(num_node_features, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv2 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv3 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             self.conv4 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
-            #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
+            self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             if self.concat2:
                 self.lin = Linear(4*hidden_channels, num_classes) # con(G, R, H, T)
             elif self.projection1 or self.projection2 or self.tail_only:  # G*R or G * |R - |H-T|| or tail_only
@@ -61,8 +61,8 @@ class CompGCN(torch.nn.Module):
         x, r = self.conv2(x, data.edge_index, data.edge_type, rel_embed=r)
         x, r = self.conv3(x, data.edge_index, data.edge_type, rel_embed=r)
         x, r = self.conv4(x, data.edge_index, data.edge_type, rel_embed=r)
-        #x, r = self.conv5(x, data.edge_index, data.edge_type, rel_embed=r)
-        #x, r = self.conv6(x, data.edge_index, data.edge_type, rel_embed=r)
+        x, r = self.conv5(x, data.edge_index, data.edge_type, rel_embed=r)
+        x, r = self.conv6(x, data.edge_index, data.edge_type, rel_embed=r)
 
         graph_splits = torch.bincount(data.batch).tolist()
         batch_node_embs = torch.split(x, graph_splits)
