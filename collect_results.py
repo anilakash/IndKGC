@@ -34,11 +34,17 @@ if __name__=='__main__':
 
 
     for i in range(len(res)):
-        if '>>>>>>>>>>>>' in res[i] and 'Early Stopping' not in res[i - 1]:
+        if 'Epoch: 049' in res[i]:
+            t_acc = res[i].split(',')[1].split(':')[1]
+            val_acc = res[i].split(',')[3].split(':')[1]
+            train_acc.append(float(t_acc))
+            best_valid_acc.append(float(val_acc))
+        elif '>>>>>>>>>>>>' in res[i] and 'Early Stopping' not in res[i - 1]:
             t_acc = res[i-1].split(',')[1].split(':')[1]
             val_acc = res[i-1].split(',')[3].split(':')[1]
             train_acc.append(float(t_acc))
             best_valid_acc.append(float(val_acc))
+
         elif 'MRR for CompGCN :' in res[i]:
             mrr_compgcn.append(float(res[i].split(':')[1].split('(')[1][:-1]))
         elif 'Hits@1 for  CompGCN :' in res[i]:
@@ -73,8 +79,9 @@ if __name__=='__main__':
     print('hits10_50_compgcn_nbfnet', hits10_50_compgcn_nbfnet)
     print('==========================================================================================')
     '''
-    #print(train_acc)
-    #print(best_valid_acc)
+    print('mrr_compgcn', len(mrr_compgcn))
+    print(len(train_acc))
+    print(len(best_valid_acc))
 
     # Average and output the results in the required format  [MRR, Hits@1, Hits@3, Hits@10, Hits@10_50]
     for i in range(len(mrr_compgcn)//5):
