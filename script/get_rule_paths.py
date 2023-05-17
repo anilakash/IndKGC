@@ -59,10 +59,10 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--data', help='Data Directory', default='../data/fb15k237_v1')
     parser.add_argument('-r', '--rule', help='Rule Directory', default='../anyburl-22/fb15k237_v1')
-    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)   # 5 and 1000
-    parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=10)  # Fix to 10
+    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=1)   # 5 and 1000
+    parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=1)  # Fix to 10
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
-    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_4_hop_1') # Need Perm
+    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_4_hop_1_all_nodes') # Need Perm
     parser.add_argument('-nc', '--num_con', help='No of Context', default=0)  # Need perm
 
     args = parser.parse_args()

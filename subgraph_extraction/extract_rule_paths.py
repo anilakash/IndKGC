@@ -69,6 +69,25 @@ def get_context(head, tail, h2r2t):   # One-hop context
                 context.append(con_int)
     return context
 
+
+def extract_links_on_induced_graph(nodes_induced_graph, h2r2t):
+    induced_triplets = []
+    for node in nodes_induced_graph:
+        root = node
+        #print('root', root)
+        rel = h2r2t[root]
+        #print('rel', rel)
+        for r, ts in rel.items():
+            for t in ts:
+                if t in nodes_induced_graph:
+                    induced_triplets.append([root, r, t])
+
+    #print('induced_triplets', induced_triplets)
+    #print('------------------------------------')
+
+    return induced_triplets
+
+
 def extract_path(args):
     rule_list_for_triplet = defaultdict(list)
     lines, rules, h2r2t, num_ins, num_con = args
@@ -77,6 +96,7 @@ def extract_path(args):
     triplet_key = str(head) + '\t' + str(tail) + '\t' + str(rel) + '\t' + str(label)
     num_paths = 0
     context = get_context(head, tail, h2r2t)
+    nodes_induced_graph = []    # Nodes in the induced graph for the given head and tail
     for rule in rules:
         if num_paths < num_ins:
             if rule[0] == rel:
@@ -88,10 +108,23 @@ def extract_path(args):
                         if example[-1] == tail:
                             rule_list_for_triplet[triplet_key].append(example)
                             num_paths+=1
+                            #print('example', example)
+                            for i in range(len(example)):
+                                if i % 2 == 0 and example[i] not in nodes_induced_graph:
+                                    nodes_induced_graph.append(example[i])
 
         else:
             break
 
+    # Extract all the triplets around the nodes in the induced graph between head and tail
+    if num_paths > 0:
+        #print('nodes_induced_graph', nodes_induced_graph)
+        induced_triplets = extract_links_on_induced_graph(nodes_induced_graph, h2r2t)
+        for link in induced_triplets:
+            if link not in rule_list_for_triplet[triplet_key]:
+                rule_list_for_triplet[triplet_key].append(link)
+
+    # Extract context for the given value of num_con
     if num_paths > 0 and num_con > 0:
         #print('Length of context is', len(context))
         cnt_head = 0
@@ -122,12 +155,6 @@ def extract_path(args):
             if con not in unique_con:
                 unique_con.append(con)
 
-        #print('rule_list_for_triplet', rule_list_for_triplet[triplet_key])
-        #print('head and tail', head, 'and', tail)
-        #print('context', context)
-        #print('cnt_head', cnt_head)
-        #print('cnt_tail', cnt_tail)
-        #print('---------------------------------------------------------------')
     return rule_list_for_triplet
 
 def triplet_rule_paths(train, rules, h2r2t, num_ins, workers, num_con):
