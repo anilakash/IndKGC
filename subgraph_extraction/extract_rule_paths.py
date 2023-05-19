@@ -115,7 +115,7 @@ def extract_path(args):
 
         else:
             break
-
+    '''
     # Extract all the triplets around the nodes in the induced graph between head and tail
     if num_paths > 0:
         #print('nodes_induced_graph', nodes_induced_graph)
@@ -123,6 +123,7 @@ def extract_path(args):
         for link in induced_triplets:
             if link not in rule_list_for_triplet[triplet_key]:
                 rule_list_for_triplet[triplet_key].append(link)
+    '''
 
     # Extract context for the given value of num_con
     if num_paths > 0 and num_con > 0:
