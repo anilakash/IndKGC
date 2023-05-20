@@ -81,7 +81,7 @@ if __name__ == '__main__':
     parser.add_argument('-nh', '--num_hidden', help='Dimension of hidden layers', default=32)
     parser.add_argument('-lr', '--learning_rate', help='Initial Learning Rate', default=0.001)
     parser.add_argument('-b', '--num_bases', help='Number of bases', default=-1)
-    parser.add_argument('-do', '--drop_out', help='Dropout probability', default=0.1)
+    parser.add_argument('-do', '--drop_out', help='Dropout probability', default=0.2)
     parser.add_argument('-e', '--epoch', help='Max epochs', default=50)
     parser.add_argument('-p', '--patience', help='Patience value for early stop', default=10)
     parser.add_argument('-o', '--opn', help='Compositional Operator', default='sub')
