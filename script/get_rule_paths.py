@@ -62,8 +62,9 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)   # 5 and 1000
     parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=10)  # Fix to 10
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
-    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_4_hop_1_all_nodes') # Need Perm
+    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_0_hop_1_rem_hop1') # Need Perm
     parser.add_argument('-nc', '--num_con', help='No of Context', default=0)  # Need perm
+    parser.add_argument('-remove_hops', '--remove_hops', help='Remove Rules till the given hops', default=1)
 
     args = parser.parse_args()
     data_dir = args.data
@@ -73,6 +74,7 @@ if __name__ == '__main__':
     workers = int(args.workers)
     out_path = args.out
     num_con = int(args.num_con)
+    remove_hops = args.remove_hops
 
     rule_file = open(os.path.join(rule_dir, 'rules'))
     train_pos_file = open(os.path.join(data_dir, 'train.txt'))
@@ -85,7 +87,8 @@ if __name__ == '__main__':
     val_neg = extract_neg(rule_dir, num_neg, 'val_preds')
     val_pos, val_neg = encode_valid_pos_neg(val_pos_file, val_neg, entity2id, rel2id)
     h2r2t = entity2rel2entity(train_pos)
-    rules = enc(rule_file, data_dir)  # Rules are sorted and encoded with reverse triplets
+    rules = enc(rule_file, data_dir, remove_hops)  # Rules are sorted and encoded with reverse triplets
+
     train_pos, train_neg = put_labels(train_pos, train_neg)
     train = train_pos + train_neg
     val_pos, val_neg = put_labels(val_pos, val_neg)

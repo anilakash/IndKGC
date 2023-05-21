@@ -43,14 +43,12 @@ def get_rule_reversed(body):
     return body_rev
 
 
-def enc(rule_file, data_dir):
+def enc(rule_file, data_dir, remove_hops):
     rel2id = json.load(open(os.path.join(data_dir, 'rel2id.json'), 'rb'))
     rules = pd.read_csv(rule_file, sep='\t', header=None)
     rules = rules.sample(frac=1).sort_values([2], ascending=False) # The rules are sorted
     rules = rules[3].tolist()
 
-    #rules = [line for line in rule_file.read().split('\n')[:-1]]
-    #rules = [line.split('\t')[3] for line in rule_file.read().split('\n')[:-1]]
     encoded_rules = []
     for line in rules:
         line = re.sub(r'\(', ' ', line)
@@ -59,47 +57,50 @@ def enc(rule_file, data_dir):
         line = line.split('<=')
         head = line[0].split()
         body = line[1].split('  ')
-        body = [b.split() for b in body]
-        #Putting in format <head, tail, relation>
-        head = restructure(head)
-        for b in body:
-            b = restructure(b)
+        if len(body)>remove_hops:
+            body = [b.split() for b in body]
+            #Putting in format <head, tail, relation>
+            head = restructure(head)
+            for b in body:
+                b = restructure(b)
 
-        #Put the inverse relation in the rule's body
-        for i in range(len(body)):
-            atom = body[i]
-            if len(body)==1 and atom[0] > atom[1]:
-                atom = inverse_atom(atom)
-            elif i==0 and atom[0] < atom[1] and len(body)>1:
-                atom = inverse_atom(atom)
-            elif i!= 0 and atom[0] > atom[1]:
-                atom = inverse_atom(atom)
+            #Put the inverse relation in the rule's body
+            for i in range(len(body)):
+                atom = body[i]
+                if len(body)==1 and atom[0] > atom[1]:
+                    atom = inverse_atom(atom)
+                elif i==0 and atom[0] < atom[1] and len(body)>1:
+                    atom = inverse_atom(atom)
+                elif i!= 0 and atom[0] > atom[1]:
+                    atom = inverse_atom(atom)
 
-        body_rev = get_rule_reversed(body)
-        head_rel_rev = 'INV_' + head[2]
-        # Get encodings
-        head[2] = rel2id[head[2]]
-        head_rel_rev = rel2id[head_rel_rev]
+            body_rev = get_rule_reversed(body)
+            head_rel_rev = 'INV_' + head[2]
+            # Get encodings
+            head[2] = rel2id[head[2]]
+            head_rel_rev = rel2id[head_rel_rev]
 
-        for b in body:
-            b[2] = rel2id[b[2]]
+            for b in body:
+                b[2] = rel2id[b[2]]
 
-        for b in body_rev:
-            b[2] = rel2id[b[2]]
+            for b in body_rev:
+                b[2] = rel2id[b[2]]
 
-        #Generating relations in head and relation sequences in body
-        head_rel = head[2]
-        body_rel_seq = []
-        body_rel_seq_rev = []
-        for b in body:
-            body_rel_seq.append(b[2])
+            #Generating relations in head and relation sequences in body
+            head_rel = head[2]
+            body_rel_seq = []
+            body_rel_seq_rev = []
+            for b in body:
+                body_rel_seq.append(b[2])
 
-        for b in body_rev:
-            body_rel_seq_rev.append(b[2])
+            for b in body_rev:
+                body_rel_seq_rev.append(b[2])
 
-        #Store all the relation sequences corresponding to each rule body which yield relation in head
-        encoded_rules.append((head_rel, body_rel_seq)) # A tuple of head's relation and body
-        encoded_rules.append((head_rel_rev, body_rel_seq_rev)) # A tuple of reversed head's relation and body
+            #Store all the relation sequences corresponding to each rule body which yield relation in head
+            encoded_rules.append((head_rel, body_rel_seq)) # A tuple of head's relation and body
+            encoded_rules.append((head_rel_rev, body_rel_seq_rev)) # A tuple of reversed head's relation and body
+        #else:
+        #    print('body', body)
     # There are some rule bodies which may appear more than once, pick the one with highest confidence.
     # As the rules are already sorted in descending order, keeping the first occurrence does the above task.
     rules_final = []
