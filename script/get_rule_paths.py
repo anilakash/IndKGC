@@ -62,7 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)   # 5 and 1000
     parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=10)  # Fix to 10
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
-    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_0_hop_1_rem_hop1') # Need Perm
+    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_4_hop_1_rem_hop1') # Need Perm
     parser.add_argument('-nc', '--num_con', help='No of Context', default=0)  # Need perm
     parser.add_argument('-remove_hops', '--remove_hops', help='Remove Rules till the given hops', default=1)
 

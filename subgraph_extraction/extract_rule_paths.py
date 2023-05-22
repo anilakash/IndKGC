@@ -124,7 +124,7 @@ def extract_path(args):
             if link not in rule_list_for_triplet[triplet_key]:
                 rule_list_for_triplet[triplet_key].append(link)
     '''
-
+    #print('context', context)
     # Extract context for the given value of num_con
     if num_paths > 0 and num_con > 0:
         #print('Length of context is', len(context))
@@ -137,7 +137,8 @@ def extract_path(args):
             #unique_con.add(con)
             if cnt_head >= num_con or len(unique_con)==len(context):
                 break
-            elif con not in rule_list_for_triplet[triplet_key] and head == con[0]:
+            #elif con not in rule_list_for_triplet[triplet_key] and head == con[0]:  # When remove_hops=0, the earlier case
+            elif con not in rule_list_for_triplet[triplet_key] and head == con[0] and con[2] != tail:
                 rule_list_for_triplet[triplet_key].append(con)
                 cnt_head += 1
             if con not in unique_con:
@@ -150,12 +151,13 @@ def extract_path(args):
             #unique_con.add(con)
             if cnt_tail >= num_con or len(unique_con)==len(context):
                 break
-            elif con not in rule_list_for_triplet[triplet_key] and tail == con[0]:
+            #elif con not in rule_list_for_triplet[triplet_key] and tail == con[0]:  # When remove_hops=0, the earlier case
+            elif con not in rule_list_for_triplet[triplet_key] and tail == con[0] and con[2] != head:
                 rule_list_for_triplet[triplet_key].append(con)
                 cnt_tail += 1
             if con not in unique_con:
                 unique_con.append(con)
-
+    #print(rule_list_for_triplet)
     return rule_list_for_triplet
 
 def triplet_rule_paths(train, rules, h2r2t, num_ins, workers, num_con):
