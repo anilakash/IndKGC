@@ -123,14 +123,17 @@ if __name__ == '__main__':
     # Extracting strict negatives triplets for the given test triplet
     # This is to ensure that no existing test triplets in train_ind should be considered as negative test_ind
     test_strict_ind, num_negatives, rel2id = get_num_neg(data_dir, train_ind_file, rule_paths_test)
+    num_rel = len(rel2id)
+    train_h2r2t = pickle.load(open(os.path.join(data_dir, 'train_h2r2t.pkl'), 'rb'))
+    test_h2r2t = pickle.load(open(os.path.join(data_dir, 'test_h2r2t.pkl'), 'rb'))
 
     # Create graphs for train, valid, and test_ind triplets
-    train_graph = create_train_graph(rule_paths_train, max_rule_length)
-    valid_graph = create_valid_graph(rule_paths_valid, max_rule_length)
-    test_graph = create_test_graph(rule_paths_test, max_rule_length)
-
+    train_graph = create_train_graph(rule_paths_train, max_rule_length, num_rel, train_h2r2t)
+    valid_graph = create_valid_graph(rule_paths_valid, max_rule_length, num_rel, train_h2r2t)
+    test_graph = create_test_graph(rule_paths_test, max_rule_length, num_rel, test_h2r2t)
+    #print(test_graph)
     # Train and test
-    num_rel = len(rel2id)
+
     train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nbfnet_rank_dict,
                num_rel, test_strict_ind, nbfnet_score_dict, args)
 

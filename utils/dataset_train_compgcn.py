@@ -3,6 +3,7 @@ from torch_geometric.data import Data
 import pickle
 import networkx as nx
 import matplotlib.pyplot as plt
+import torch.nn.functional as F
 import time
 import numpy as np
 import torch
@@ -84,8 +85,8 @@ def get_node_features(G, target_nodes, nodes, max_rule_length):
         renamed_node_double_radius = rename_double_radius(node_double_radius, node_dict)
 
         for key, val in renamed_node_double_radius.items():
-            #print(val)
-            val = np.concatenate((one_hot(val[0], max_rule_length+2), one_hot(val[1], max_rule_length+2)), axis=0)
+            # Need to modify the max_rule_length when using context
+            val = np.concatenate((one_hot(val[0], max_rule_length), one_hot(val[1], max_rule_length)), axis=0)
             node_features.append(val)
         return node_dict, node_features
     else:
@@ -127,8 +128,22 @@ def add_inverse(edges, edge_type):
 
     return edge_in, edge_type_in
 
+def get_tail_con(tail, num_rel, h2r2t):
+    r2t = h2r2t[tail]    # Get all the relational context for tail
+    rel2wt = {}
+    for rel, ent in r2t.items():
+        rel2wt[rel] = len(ent)
 
-def create_train_graph(rule_graph_for_train, max_rule_length):
+    relations = [key for key in rel2wt]
+    weight = [val for val in rel2wt.values()]
+    z = torch.zeros(num_rel, dtype=torch.float)
+    relations = torch.tensor(relations)
+    weight = torch.tensor(weight, dtype=torch.float)
+    z[relations] = weight
+    z = F.normalize(z, p=2, dim=0)
+
+    return z
+def create_train_graph(rule_graph_for_train, max_rule_length, num_rel, h2r2t):
     rule_graph = rule_graph_for_train
     # Generate triplets for the given rule graph
     train_graph = []
@@ -171,7 +186,6 @@ def create_train_graph(rule_graph_for_train, max_rule_length):
 
             # Double-Radius Vertex Labeling and Node Features
             node_dict, node_features = get_node_features(G, target_nodes, nodes, max_rule_length)
-
             # Convert the triplets into new node encodings
             for triplet in triplets:
                 triplet[0] = node_dict[triplet[0]]
@@ -186,7 +200,8 @@ def create_train_graph(rule_graph_for_train, max_rule_length):
             edge_index = extract_edge_index(edges)
             edge_type = torch.tensor(edge_type)
             y = torch.tensor([int(label)], dtype=torch.long)
+            z = get_tail_con(target_nodes[1], num_rel, h2r2t)   # Get the vector giving relational context to tail
             data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y)
-            train_graph.append([data, target_rel])
+            train_graph.append([data, target_rel, z])
 
     return train_graph

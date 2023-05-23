@@ -48,14 +48,15 @@ class CompGCN(torch.nn.Module):
             #self.conv5 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             #self.conv6 = CompGCNConv(hidden_channels, hidden_channels, num_relations, dropout, act, opn, bias)
             if self.concat2:
-                self.lin = Linear(4*hidden_channels, num_classes) # con(G, R, H, T)
+                self.lin = Linear(4*hidden_channels + num_relations, num_classes) # con(G, R, H, T)
             elif self.projection1 or self.projection2 or self.tail_only:  # G*R or G * |R - |H-T|| or tail_only
-                self.lin = Linear(hidden_channels, num_classes)
+                self.lin = Linear(hidden_channels + num_relations, num_classes)
             else:  # Other concatenations
-                self.lin = Linear(2 * hidden_channels, num_classes)
+                self.lin = Linear(2 * hidden_channels + num_relations, num_classes)
 
 
-    def forward(self, data, rel_labels, drop_prob):
+    def forward(self, data, rel_labels, z, drop_prob):
+        #print('z', z)
         r = self.rel_graph_emb
         x, r = self.conv1(data.x, data.edge_index, data.edge_type, rel_embed=r)  # node_emb, rel_emb
         x, r = self.conv2(x, data.edge_index, data.edge_type, rel_embed=r)
@@ -80,28 +81,28 @@ class CompGCN(torch.nn.Module):
         #diff_h_t = (h_batch - t_batch) * (h_batch - t_batch)
 
         if self.concat0:
-            x = torch.cat([t_batch, rel_embs], dim=1)
+            x = torch.cat([t_batch, rel_embs, z], dim=1)
             x = self.lin(x)
         elif self.concat1:
-            x = torch.cat([x, rel_embs], dim=1)
+            x = torch.cat([x, rel_embs, z], dim=1)
             x = self.lin(x)
         elif self.concat2:
-            x = torch.cat([x, rel_embs, h_batch, t_batch], dim=1)
+            x = torch.cat([x, rel_embs, h_batch, t_batch, z], dim=1)
             x = self.lin(x)
         elif self.concat3:
-            x = torch.cat([x, (t_batch - h_batch) * rel_embs], dim=1)
+            x = torch.cat([x, (t_batch - h_batch) * rel_embs, z], dim=1)
             x = self.lin(x)
         elif self.concat4:
-            x = torch.cat([x, (t_batch * h_batch) * rel_embs], dim=1)
+            x = torch.cat([x, (t_batch * h_batch) * rel_embs, z], dim=1)
             x = self.lin(x)
         elif self.projection1:
-            x = torch.cat([x * rel_embs], dim=1)
+            x = torch.cat([x * rel_embs, z], dim=1)
             x = self.lin(x)
         elif self.projection2:
-            x = torch.cat([x * (rel_embs - h_batch - t_batch)], dim=1)
+            x = torch.cat([x * (rel_embs - h_batch - t_batch), z], dim=1)
             x = self.lin(x)
         elif self.tail_only:
-            x = t_batch
+            x = torch.cat([t_batch, z], dim=1)
             x = self.lin(x)
         else:
             print('Not Implemented...')
