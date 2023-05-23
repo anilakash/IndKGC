@@ -87,7 +87,7 @@ if __name__ == '__main__':
     parser.add_argument('-o', '--opn', help='Compositional Operator', default='sub')
     parser.add_argument('-bs', '--bias', help='Bias', default=False)
     parser.add_argument('-a', '--act', help='Activation', default=torch.relu)
-    parser.add_argument('-c0', '--concat0', help='Concatenate Tail Emb with Rel Emb', default=True)
+    parser.add_argument('-c0', '--concat0', help='Concatenate Tail Emb with Rel Emb', default=False)
     parser.add_argument('-c1', '--concat1', help='Concatenate Graph Emb with Rel Emb', default=False) #2
     parser.add_argument('-c2', '--concat2', help='Concatenate Graph Emb, Rel Emb, Head, Tail', default=False) #4
     parser.add_argument('-c3', '--concat3', help='Concatenate Graph Emb with Projection of |Tail-Head| on Rel Emb ', default=False)
