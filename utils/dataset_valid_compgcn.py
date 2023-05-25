@@ -133,7 +133,7 @@ def get_tail_con(tail, num_rel, h2r2t):
     relations = torch.tensor(relations)
     weight = torch.tensor(weight, dtype=torch.float)
     z[relations] = weight
-    z = F.normalize(z, p=2, dim=0)
+    #z = F.normalize(z, p=2, dim=0)
 
     return z
 
