@@ -52,7 +52,8 @@ class CompGCN(torch.nn.Module):
             elif self.projection1 or self.projection2 or self.tail_only:  # G*R or G * |R - |H-T|| or tail_only
                 self.lin = Linear(hidden_channels + num_relations, num_classes)
             else:  # Other concatenations
-                self.lin = Linear(2 * hidden_channels + num_relations, num_classes)
+                #self.lin = Linear(2 * hidden_channels + num_relations, num_classes) # Use with tail rel contexts
+                self.lin = Linear(2 * hidden_channels,  num_classes)
 
 
     def forward(self, data, rel_labels, z, drop_prob):
@@ -81,7 +82,8 @@ class CompGCN(torch.nn.Module):
         #diff_h_t = (h_batch - t_batch) * (h_batch - t_batch)
 
         if self.concat0:
-            x = torch.cat([t_batch, rel_embs, z], dim=1)
+            #x = torch.cat([t_batch, rel_embs, z], dim=1)
+            x = torch.cat([t_batch, rel_embs], dim=1)
             x = self.lin(x)
         elif self.concat1:
             x = torch.cat([x, rel_embs, z], dim=1)

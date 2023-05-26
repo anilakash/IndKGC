@@ -2,7 +2,7 @@
 import sys
 import os
 sys.path.append(os.getcwd())
-from subgraph_extraction.extract_rule_paths import triplet_rule_paths
+from subgraph_extraction.extract_5_rule_paths import triplet_rule_paths
 
 
 def put_labels(test):

@@ -5,7 +5,8 @@ sys.path.append(os.getcwd())
 from utils.encode_triplets import encode, entity2rel2entity, put_labels, encode_valid_pos_neg, encode_train_ind
 from utils.encode_rules import enc
 from utils.neg_triplet import extract_neg
-from subgraph_extraction.extract_rule_paths import triplet_rule_paths
+from subgraph_extraction.extract_5_rule_paths import triplet_rule_paths # Choose only five rule-paths
+#from subgraph_extraction.extract_rule_paths import triplet_rule_paths # Choose atmost five rules and their path
 from utils.generate_triplets_to_test import generate_batch_triplets
 from utils.test_data import get_rule_paths_test_ind
 import time
