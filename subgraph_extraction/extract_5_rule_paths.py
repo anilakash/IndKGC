@@ -104,7 +104,8 @@ def extract_path(args):
                 if len(rule_path_examples)>0:
                     for i in range(len(rule_path_examples)*2):
                         example = random.choice(rule_path_examples)
-                        if example[-1] == tail and example not in rule_list_for_triplet[triplet_key]:
+                        #if example[-1] == tail and example not in rule_list_for_triplet[triplet_key]:
+                        if example[-1] == tail:
                             rule_list_for_triplet[triplet_key].append(example)
                             num_paths+=1
                             if num_paths == num_ins:
