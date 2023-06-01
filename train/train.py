@@ -310,13 +310,21 @@ def eval_test(data_dir, test_graph, best_epoch, num_negatives, metric, nbfnet_ra
     ranking_dict['CompGCN_NBFNet3'] = ranking_original_nbfnet_2
     ranking_dict['CompGCN_NBFNet4'] = ranking_original_nbfnet_3
     ranking_dict['CompGCN_NBFNet5'] = ranking_original_nbfnet_4
-    '''
+
     ranking_dict['NBFNet_NBFNet1'] = ranking_ab_ind_nbfnet_0
     ranking_dict['NBFNet_NBFNet2'] = ranking_ab_ind_nbfnet_1
     ranking_dict['NBFNet_NBFNet3'] = ranking_ab_ind_nbfnet_2
     ranking_dict['NBFNet_NBFNet4'] = ranking_ab_ind_nbfnet_3
     ranking_dict['NBFNet_NBFNet5'] = ranking_ab_ind_nbfnet_4
-    '''
+    print('============================================================================')
+    print('CompGCN_Random', ranking_random)
+    print('============================================================================')
+    print('CompGCN_NBFNet1', ranking_original_nbfnet_0)
+    print('============================================================================')
+    print('NBFNet_NBFNet1', ranking_ab_ind_nbfnet_0)
+    print('============================================================================')
+
+
     get_metric_score(ranking_dict, metric, num_negatives)
 
 def train_test(data_dir, train_graph, valid_graph, test_graph, num_negatives, nbfnet_rank_dict,
