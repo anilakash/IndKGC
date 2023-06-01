@@ -43,7 +43,7 @@ def decode(batch_key, inst, id2entity, id2rel):
     print(batch_key, '<--', inst_decoded)
 
 
-    print('-----------------------------------------------------')
+    print('-----------------------------------------------------------------------------------------------')
 
 for i in range(len(datasets)):
     test_file = os.path.join(data_dir, datasets[i], test_name)
@@ -60,9 +60,10 @@ for i in range(len(datasets)):
     num_ins = 0
     for batch_key, sample_graphs in test.items():
         batch_key = batch_key + '\t' + str(1)
-        if len(sample_graphs[batch_key]) > 2 and len(sample_graphs[batch_key]) < 6 and \
-                int(batch_key.split('\t')[2]) % 2 == 0:
+        #if len(sample_graphs[batch_key]) > 2 and len(sample_graphs[batch_key]) < 6 and \
+        #        int(batch_key.split('\t')[2]) % 2 == 0:
             #print(batch_key, '\t', sample_graphs[batch_key])
+        if len(sample_graphs[batch_key]) > 2 and len(sample_graphs[batch_key]) < 6:
             decode(batch_key, sample_graphs[batch_key], id2entity, id2rel)
 
         num_ins = num_ins + len(sample_graphs[batch_key])
