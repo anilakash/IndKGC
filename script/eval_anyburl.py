@@ -153,6 +153,8 @@ if __name__=='__main__':
     parser.add_argument('-nnbf', '--num_nbfnet_runs', help='Number of NBFNet runs', default=5)
 
     args = parser.parse_args()
+    print('Arguments', args)
+    print('--------------------------------------------------------------------------------------------------')
     data_dir = args.data_dir
     pred_test_dir = args.rule
     num_nbfnet_runs = int(args.num_nbfnet_runs)
