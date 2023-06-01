@@ -25,6 +25,7 @@ if __name__=='__main__':
     parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=0)  # 5 and 1000
     parser.add_argument('-remove_hops', '--remove_hops', help='Remove Rules till the given hops', default=0)
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
+    parser.add_argument('-o', '--out', help='out_file', default='test_all_rule')
 
     args = parser.parse_args()
     data_dir = args.data
@@ -32,6 +33,7 @@ if __name__=='__main__':
     num_ins = int(args.num_ins)
     remove_hops = args.remove_hops
     workers = int(args.workers)
+    out = args.out
 
     rule_file = open(os.path.join(rule_dir, 'rules'))
     rules = enc(rule_file, data_dir, remove_hops)  # Rules are sorted and encoded with reverse triplets with conf
@@ -49,7 +51,7 @@ if __name__=='__main__':
         num_ins = len(rules)
     rule_conf_test = get_rule_paths_test_ind(test_batch_triplets, rel2id, entity2id, num_ins, rules, h2r2t, workers)
     print('Writing the test scores')
-    out_file = open(os.path.join(data_dir, 'noisy_rank/test_scores.pkl'), 'wb')
+    out_file = open(os.path.join(data_dir, 'noisy_rank', out +'.pkl'), 'wb')
     pickle.dump(rule_conf_test, out_file)
 
     end = time.time()
