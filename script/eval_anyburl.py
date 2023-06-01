@@ -244,7 +244,9 @@ if __name__=='__main__':
     ranking_dict['AnyBURL_NBFNet3'] = ranking_original_nbfnet_2
     ranking_dict['AnyBURL_NBFNet4'] = ranking_original_nbfnet_3
     ranking_dict['AnyBURL_NBFNet5'] = ranking_original_nbfnet_4
-    #print('Ranking Random', ranking_random)
-    #print('Ranking Original_NBFNet', ranking_original_nbfnet_0)
-
+    print('===============================================================================')
+    print('AnyBURL_random', ranking_random)
+    print('===============================================================================')
+    print('AnyBURL_NBFNet', ranking_original_nbfnet_0)
+    print('===============================================================================')
     get_metric_score(ranking_dict, metric, num_negatives)
