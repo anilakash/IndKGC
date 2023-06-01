@@ -2,12 +2,18 @@
 import os
 import pickle as pkl
 import json
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-d', '--data', help='Dataset', default='fb15k237_v1')
+
+args = parser.parse_args()
 
 data_dir = 'data'
 #datasets = ['fb15k237_v1', 'fb15k237_v2', 'fb15k237_v3', 'fb15k237_v4',
  #           'WN18RR_v1',  'WN18RR_v2', 'WN18RR_v3',  'WN18RR_v4',
   #          'nell_v1',  'nell_v2', 'nell_v3',  'nell_v4']
-datasets = ['fb15k237_v1']
+datasets = [args.data]
 test_name = 'top_5_paths_only/test.pkl'
 
 def decode(batch_key, inst, id2entity, id2rel):
@@ -38,8 +44,6 @@ def decode(batch_key, inst, id2entity, id2rel):
 
 
     print('-----------------------------------------------------')
-
-
 
 for i in range(len(datasets)):
     test_file = os.path.join(data_dir, datasets[i], test_name)
