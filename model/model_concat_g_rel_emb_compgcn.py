@@ -56,7 +56,8 @@ class CompGCN(torch.nn.Module):
                 self.lin = Linear(2 * hidden_channels,  num_classes)
 
 
-    def forward(self, data, rel_labels, z, drop_prob):
+    #def forward(self, data, rel_labels, z, drop_prob):
+    def forward(self, data, rel_labels, drop_prob):
         #print('z', z)
         r = self.rel_graph_emb
         x, r = self.conv1(data.x, data.edge_index, data.edge_type, rel_embed=r)  # node_emb, rel_emb
@@ -85,6 +86,12 @@ class CompGCN(torch.nn.Module):
             #x = torch.cat([t_batch, rel_embs, z], dim=1)
             x = torch.cat([t_batch, rel_embs], dim=1)
             x = self.lin(x)
+        else:
+            print('Not Implemented...')
+        return x
+
+
+        '''
         elif self.concat1:
             x = torch.cat([x, rel_embs, z], dim=1)
             x = self.lin(x)
@@ -106,7 +113,6 @@ class CompGCN(torch.nn.Module):
         elif self.tail_only:
             x = torch.cat([t_batch, z], dim=1)
             x = self.lin(x)
-        else:
-            print('Not Implemented...')
-        return x
+        '''
+
 

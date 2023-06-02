@@ -13,9 +13,9 @@ def train(train_loader, model, device, optimizer, criterion, drop_prob):
     model.train()
     for data in train_loader:
         rel_labels = data[1].to(device)
-        z = data[2].to(device)
+        #z = data[2].to(device)
         data = data[0].to(device)
-        out = model(data, rel_labels, z, drop_prob)
+        out = model(data, rel_labels, drop_prob)
         loss = criterion(out, data.y)
         loss.backward()
         optimizer.step()
@@ -26,9 +26,9 @@ def test(loader, model, device, drop_prob):
      correct = 0
      for data in loader:
          rel_labels = data[1].to(device)
-         z = data[2].to(device)
+         #z = data[2].to(device)
          data = data[0].to(device)
-         out = model(data, rel_labels, z, drop_prob)
+         out = model(data, rel_labels, drop_prob)
          pred = out.argmax(dim=1)  # Use the class with highest probability.
          correct += int((pred == data.y).sum())  # Check against ground-truth labels.
      return correct / len(loader.dataset)  # Derive ratio of correct predictions.
@@ -38,9 +38,9 @@ def eval_valid_test(val_or_test_loader, model, device, drop_prob):
     scores = []
     for data in val_or_test_loader:
         rel_labels = data[1].to(device)
-        z = data[2].to(device)
+        #z = data[2].to(device)
         data = data[0].to(device)
-        out = model(data, rel_labels, z, drop_prob)
+        out = model(data, rel_labels, drop_prob)
         pred = out.argmax(dim=1)
         for index, score in enumerate(out):
             scores.append(float(score[1]))
