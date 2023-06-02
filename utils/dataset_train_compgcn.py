@@ -143,7 +143,7 @@ def get_tail_con(tail, num_rel, h2r2t):
     #z = F.normalize(z, p=2, dim=0)
 
     return z
-def create_train_graph(rule_graph_for_train, max_rule_length, num_rel, h2r2t):
+def create_train_graph(rule_graph_for_train, max_rule_length, num_rel):
     rule_graph = rule_graph_for_train
     # Generate triplets for the given rule graph
     train_graph = []
@@ -200,8 +200,8 @@ def create_train_graph(rule_graph_for_train, max_rule_length, num_rel, h2r2t):
             edge_index = extract_edge_index(edges)
             edge_type = torch.tensor(edge_type)
             y = torch.tensor([int(label)], dtype=torch.long)
-            z = get_tail_con(target_nodes[1], num_rel, h2r2t)   # Get the vector giving relational context to tail
+            #z = get_tail_con(target_nodes[1], num_rel, h2r2t)   # Get the vector giving relational context to tail
             data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y)
-            train_graph.append([data, target_rel, z])
+            train_graph.append([data, target_rel])
 
     return train_graph

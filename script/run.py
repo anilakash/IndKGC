@@ -128,9 +128,9 @@ if __name__ == '__main__':
     #test_h2r2t = pickle.load(open(os.path.join(data_dir, 'test_h2r2t.pkl'), 'rb'))
 
     # Create graphs for train, valid, and test_ind triplets
-    train_graph = create_train_graph(rule_paths_train, max_rule_length, num_rel, train_h2r2t)
-    valid_graph = create_valid_graph(rule_paths_valid, max_rule_length, num_rel, train_h2r2t)
-    test_graph = create_test_graph(rule_paths_test, max_rule_length, num_rel, test_h2r2t)
+    train_graph = create_train_graph(rule_paths_train, max_rule_length, num_rel)
+    valid_graph = create_valid_graph(rule_paths_valid, max_rule_length, num_rel)
+    test_graph = create_test_graph(rule_paths_test, max_rule_length, num_rel)
     #print(test_graph)
     # Train and test
 

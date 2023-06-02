@@ -138,7 +138,7 @@ def get_tail_con(tail, num_rel, h2r2t):
 
     return z
 
-def create_test_graph(rule_graph_for_test, max_rule_length, num_rel, h2r2t):
+def create_test_graph(rule_graph_for_test, max_rule_length, num_rel):
     rule_graph = rule_graph_for_test
     # Generate triplets for the given rule graph
     #cnt = 0
@@ -219,11 +219,11 @@ def create_test_graph(rule_graph_for_test, max_rule_length, num_rel, h2r2t):
                     edge_index = extract_edge_index(edges)
                     edge_type = torch.tensor(edge_type)
                     y = torch.tensor([int(label)], dtype=torch.long)
-                    z = get_tail_con(target_nodes[1], num_rel, h2r2t)  # Get the vector giving relational context to tail
+                    #z = get_tail_con(target_nodes[1], num_rel, h2r2t)  # Get the vector giving relational context to tail
                     data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y)
                     #print(data)
                     #test_batch_graph[k] = data
-                    test_batch_graph[k] = [data, target_rel, z]
+                    test_batch_graph[k] = [data, target_rel]
                     #print('Len of test sample: ', len(data))
                     #print('-----------------------------------')
             test_graph[key] = test_batch_graph

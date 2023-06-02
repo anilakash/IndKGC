@@ -137,7 +137,7 @@ def get_tail_con(tail, num_rel, h2r2t):
 
     return z
 
-def create_valid_graph(rule_graph_for_valid, max_rule_length, num_rel, h2r2t):
+def create_valid_graph(rule_graph_for_valid, max_rule_length, num_rel):
     rule_graph = rule_graph_for_valid
     # Generate triplets for the given rule graph
     cnt = 0
@@ -213,9 +213,9 @@ def create_valid_graph(rule_graph_for_valid, max_rule_length, num_rel, h2r2t):
             edge_index = extract_edge_index(edges)
             edge_type = torch.tensor(edge_type)
             y = torch.tensor([int(label)], dtype=torch.long)
-            z = get_tail_con(target_nodes[1], num_rel, h2r2t)  # Get the vector giving relational context to tail
+            #z = get_tail_con(target_nodes[1], num_rel, h2r2t)  # Get the vector giving relational context to tail
             data = Data(x=x, edge_index=edge_index, edge_type=edge_type, y=y)
-            valid_graph.append([data, target_rel, z])
+            valid_graph.append([data, target_rel])
 
     return valid_graph
 
