@@ -124,8 +124,8 @@ if __name__ == '__main__':
     # This is to ensure that no existing test triplets in train_ind should be considered as negative test_ind
     test_strict_ind, num_negatives, rel2id = get_num_neg(data_dir, train_ind_file, rule_paths_test)
     num_rel = len(rel2id)
-    train_h2r2t = pickle.load(open(os.path.join(data_dir, 'train_h2r2t.pkl'), 'rb'))
-    test_h2r2t = pickle.load(open(os.path.join(data_dir, 'test_h2r2t.pkl'), 'rb'))
+    #train_h2r2t = pickle.load(open(os.path.join(data_dir, 'train_h2r2t.pkl'), 'rb'))
+    #test_h2r2t = pickle.load(open(os.path.join(data_dir, 'test_h2r2t.pkl'), 'rb'))
 
     # Create graphs for train, valid, and test_ind triplets
     train_graph = create_train_graph(rule_paths_train, max_rule_length, num_rel, train_h2r2t)
