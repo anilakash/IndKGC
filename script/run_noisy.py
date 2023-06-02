@@ -97,25 +97,28 @@ def test_noisy(data_dir, test_scores, num_negatives, nbfnet_rank_dict, num_rel, 
 
     ranking_dict = collections.defaultdict(list)
     # Different Rankings to fetch
-    ranking_original = []  # Only the AnyBURL indices
+    ranking_original = []  # Only the Noisy indices
 
-    ranking_random = []  # AnyBURL indices + random rank for non-AnyBURL (RGCN)
+    ranking_random = []  # Noisy indices + random rank for non-Noisy
 
-    ranking_original_nbfnet_0 = []  # RGCN + NBFNet run 1
-    ranking_original_nbfnet_1 = []  # RGCN + NBFNet run 2
-    ranking_original_nbfnet_2 = []  # RGCN + NBFNet run 3
-    ranking_original_nbfnet_3 = []  # RGCN + NBFNet run 4
-    ranking_original_nbfnet_4 = []  # RGCN + NBFNet run 5
-
+    ranking_original_nbfnet_0 = []  # Noisy + NBFNet run 1
+    ranking_original_nbfnet_1 = []  # Noisy + NBFNet run 2
+    ranking_original_nbfnet_2 = []  # Noisy + NBFNet run 3
+    ranking_original_nbfnet_3 = []  # Noisy + NBFNet run 4
+    ranking_original_nbfnet_4 = []  # Noisy + NBFNet run 5
+    '''
     ranking_ab_ind_nbfnet_0 = []  # NBFNet + NBFNet run 1
     ranking_ab_ind_nbfnet_1 = []  # NBFNet + NBFNet run 2
     ranking_ab_ind_nbfnet_2 = []  # NBFNet + NBFNet run 3
     ranking_ab_ind_nbfnet_3 = []  # NBFNet + NBFNet run 4
     ranking_ab_ind_nbfnet_4 = []  # NBFNet + NBFNet run 5
-
+    '''
     batch_no = -1
     test_scores_final = []
     for batch_key, batch_triplets in test_scores.items():
+        print('batch key', batch_key)
+        print('batch triplets', batch_triplets)
+
         batch_no += 1
         sample_keys = []
         sample_scores = []
@@ -123,7 +126,6 @@ def test_noisy(data_dir, test_scores, num_negatives, nbfnet_rank_dict, num_rel, 
             sample_keys.append(sample_key.split('\t')[:-1])
             sample_scores.append(sample_score)
         if len(sample_scores) > 0:
-            #test_loader = load_test(sample_graphs)
             scores = sample_scores
             batch_score = {}
             for i in range(len(sample_keys)):
@@ -133,7 +135,10 @@ def test_noisy(data_dir, test_scores, num_negatives, nbfnet_rank_dict, num_rel, 
             test_scores_final.append(batch_score)
             # Suffle the batch_score to break the ties randomly
             batch_score_shuffled = shuffle_batch(batch_score)
+            print('batch score shuffled', batch_score_shuffled)
             sorted_batch_score = dict(sorted(batch_score_shuffled.items(), key=operator.itemgetter(1), reverse=True))
+            print('batch score sorted', sorted_batch_score)
+            print('===========================================================')
             if batch_key in sorted_batch_score:  # Case 1: The Pos has a rule
                 batch_key_pred_pos = list(sorted_batch_score).index(batch_key)
                 ranking_original.append(int(batch_key_pred_pos) + 1)
