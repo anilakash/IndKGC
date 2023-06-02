@@ -99,8 +99,7 @@ def extract_path(args):
     head, tail, rel = triplet[0], triplet[1], triplet[2]
     triplet_key = str(head) + '\t' + str(tail) + '\t' + str(rel) + '\t' + str(label)
     num_rules = 0
-    # context = get_context(head, tail, h2r2t)
-    # nodes_induced_graph = []    # Nodes in the induced graph for the given head and tail
+
     for rule in rules:
         if num_rules < num_ins:
             if rule[0] == rel:
@@ -113,16 +112,12 @@ def extract_path(args):
                             conf_acc.append(rule[2])
                             num_rules += 1
                             break
-                            # print('example', example)
-                            # for i in range(len(example)):
-                            #    if i % 2 == 0 and example[i] not in nodes_induced_graph:
-                            #        nodes_induced_graph.append(example[i])
+
 
         else:
             break
 
     # Estimate noisy-or score
-    #print('conf', conf_acc)
     score = 1
     if len(conf_acc)>0:
         for scr in conf_acc:

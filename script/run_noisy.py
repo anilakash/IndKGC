@@ -323,9 +323,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-d', '--in_dir', help='Input Directory', default='../data/fb15k237_v1')
     parser.add_argument('-nnbf', '--num_nbfnet_runs', help='Number of NBFNet runs', default=5)
-    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)
-    parser.add_argument('-out', '--out', help='Out path where noisy test scores saved',
-                        default='noisy_rank')
+    parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=0)
+    parser.add_argument('-out', '--out', help='Out file with noisy test scores saved',
+                        default='test_all_rule')
 
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -338,9 +338,9 @@ if __name__ == '__main__':
 
     print('Arguments', args)
 
-    path_dir = os.path.join(data_dir, out)
+    #path_dir = os.path.join(data_dir, out)
     # Read the scores Test data
-    test_scores = pickle.load(open(path_dir + '/test_scores.pkl', 'rb'))
+    test_scores = pickle.load(open(os.path.join(data_dir, 'noisy_rank', out + '.pkl'), 'rb'))
 
     train_ind_file = open(os.path.join(data_dir, 'train_ind.txt'))
     # Read and Process the NBFNet ranks
