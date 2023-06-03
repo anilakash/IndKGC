@@ -101,21 +101,21 @@ def extract_path(args):
     num_rules = 0
 
     for rule in rules:
-        if num_rules < num_ins:
-            if rule[0] == rel:
-                rule_path_examples = extract_rule_graph(rule, head, h2r2t)
-                if len(rule_path_examples) > 0:
-                    for example in rule_path_examples:
-                        # if example[-1] == tail and example not in rule_list_for_triplet[triplet_key]:
-                        if example[-1] == tail:
-                            #rule_list_for_triplet[triplet_key].append(example)
-                            conf_acc.append(rule[2])
-                            num_rules += 1
-                            break
+        #if num_rules < num_ins:
+        if rule[0] == rel:
+            rule_path_examples = extract_rule_graph(rule, head, h2r2t)
+            if len(rule_path_examples) > 0:
+                for example in rule_path_examples:
+                    # if example[-1] == tail and example not in rule_list_for_triplet[triplet_key]:
+                    if example[-1] == tail:
+                        #rule_list_for_triplet[triplet_key].append(example)
+                        conf_acc.append(rule[2])
+                        num_rules += 1
+                        break
 
 
-        else:
-            break
+        #else:
+        #    break
 
     # Estimate noisy-or score
     score = 1

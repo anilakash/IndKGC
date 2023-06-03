@@ -20,6 +20,8 @@ import argparse
 if __name__=='__main__':
     start = time.time()
     parser = argparse.ArgumentParser()
+    #parser.add_argument('-d', '--data', help='Data Directory', default='../data/nell_v3')
+    #parser.add_argument('-r', '--rule', help='Rule Directory', default='../anyburl-22/nell_v3')
     parser.add_argument('-d', '--data', help='Data Directory', default='../data/fb15k237_v1')
     parser.add_argument('-r', '--rule', help='Rule Directory', default='../anyburl-22/fb15k237_v1')
     parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=0)  # 5 and 1000
