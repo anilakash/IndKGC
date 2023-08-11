@@ -34,15 +34,26 @@ IndKGC require [NBFNet](https://github.com/KiddoZhu/NBFNet-PyG) ranks and model 
 
 ## Reproduction ##
 The main results in the IndKGC are obtained using the following steps:  
-a. Get the rule path instantiations for the triplets of train, valid, and test_ind datasets.
+a.0. Get the rule path instantiations for CompGCN/RGCN for the triplets of train, valid, and test_ind datasets.
 ```bash
    python3 script/get_rule_paths.py -d data/fb15k237_v1 -r anyburl-22/fb15k237_v1 
 ```
-b. Train and Test RGCN model over the rule paths.
+a.1. Get noisy-or confience for Test data
+```bash
+   python3 script/get_noisy_or.py -d data/fb15k237_v1 -r anyburl-22/fb15k237_v1 
+```
+b. Train and Test CompGCN/RGCN/Noisy-OR model over the rule paths.
 ```bash
    python3 script/run.py -d data/fb15k237_v1
 ```
-c. The above execution will train and evaluate R-GCN, R-GCN + NBFNet, and NBFNet + NBFNet models. To get evaluation for AnyBURL and AnyBURL + NBFNet execute the below command
+```bash
+   python3 script/run_rgcn.py -d data/fb15k237_v1
+```
+```bash
+   python3 script/run_noisy.py -d data/fb15k237_v1
+```
+
+c. The above execution will evaluate Noisy-OR and train and evaluate CompGCN/R-GCN, CompGCN/R-GCN + NBFNet, and NBFNet + NBFNet models. To get evaluation for AnyBURL and AnyBURL + NBFNet execute the below command
 ```bash
    python3 script/eval_anyburl.py --data_dir data/fb15k237_v1 -r anyburl-22/fb15k237_v1
 ```
@@ -52,8 +63,8 @@ d. The NBFNet evaluation can be obtained by running [NBFNet](https://github.com/
 If you make use of this code in your work, please cite the following paper:
 
 	@article{IndKGC,
-	  title={Inductive Knowledge Graph Completion with GNN and Rule.},
+	  title={Inductive Knowledge Graph Completion with GNN and Rule: An Analysis},
 	  author={Akash Anil, Victor Gutierrez Basulto, Yazmín Ibáñez-García, Steven Schockaert},
-	  journal={Yet to decide},
+	  journal={Arxiv.},
 	  year={2023}
 	}
