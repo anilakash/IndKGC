@@ -5,8 +5,8 @@ sys.path.append(os.getcwd())
 from utils.encode_triplets import encode, entity2rel2entity, put_labels, encode_valid_pos_neg, encode_train_ind
 from utils.encode_rules import enc
 from utils.neg_triplet import extract_neg
-from subgraph_extraction.extract_5_rule_paths import triplet_rule_paths # Choose only five rule-paths
-#from subgraph_extraction.extract_rule_paths import triplet_rule_paths # Choose atmost five rules and their path
+#from subgraph_extraction.extract_5_rule_paths import triplet_rule_paths # Choose only five rule-paths
+from subgraph_extraction.extract_rule_paths import triplet_rule_paths # Choose atmost five rules and their path
 from utils.generate_triplets_to_test import generate_batch_triplets
 from utils.test_data import get_rule_paths_test_ind
 import time
@@ -61,10 +61,10 @@ if __name__ == '__main__':
     parser.add_argument('-d', '--data', help='Data Directory', default='../data/fb15k237_v1')
     parser.add_argument('-r', '--rule', help='Rule Directory', default='../anyburl-22/fb15k237_v1')
     parser.add_argument('-n', '--num_ins', help='No of Instantiations', default=5)   # 5 and 1000
-    parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=10)  # Fix to 10
+    parser.add_argument('-nn', '--num_neg', help='No of negative triplets per triplet', default=10)  # Set as per data
     parser.add_argument('-w', '--workers', help='No of workers', default=7)
-    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths_context_0_hop_1') # Need Perm
-    parser.add_argument('-nc', '--num_con', help='No of Context', default=0)  # Need perm
+    parser.add_argument('-o', '--out', help='Out path to save output', default='_paths') # Need Perm
+    parser.add_argument('-nc', '--num_con', help='No of Context', default=0)
     parser.add_argument('-remove_hops', '--remove_hops', help='Remove Rules till the given hops', default=0)
 
     args = parser.parse_args()

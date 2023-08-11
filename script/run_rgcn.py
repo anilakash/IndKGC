@@ -93,7 +93,7 @@ if __name__ == '__main__':
     num_ins = int(args.num_ins)
     max_rule_length = int(args.len_rule)
 
-    path_dir = os.path.join(data_dir, 'top_%d' % num_ins + '_paths_only')
+    path_dir = os.path.join(data_dir, 'top_%d' % num_ins + '_paths')
     # Read the path instantiations for Train, Valid, and Test data
     rule_paths_train = pickle.load(open(path_dir + '/train.pkl', 'rb'))
     rule_paths_valid = pickle.load(open(path_dir + '/valid.pkl', 'rb'))
