@@ -2,7 +2,7 @@ import torch
 from torch_geometric.data import Data
 import pickle
 import networkx as nx
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import torch.nn.functional as F
 import time
 import numpy as np
