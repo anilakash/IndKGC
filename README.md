@@ -1,6 +1,6 @@
 # IndKGC: Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis #
 
-This is the official implemetation of the paper Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis ().
+This is the official implemetation of the paper Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis.
 
 Authors:
 [Akash Anil, Victor Gutierrez Basulto, Yazmín Ibáñez-García, Steven Schockaert]
