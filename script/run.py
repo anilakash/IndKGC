@@ -1,4 +1,4 @@
-# Train, Validate, and Evaluate over Test Data
+# Train, Validate, and Evaluate over Test Data using CompGCN
 import os
 import sys
 sys.path.append(os.getcwd())
