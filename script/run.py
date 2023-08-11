@@ -95,7 +95,7 @@ if __name__ == '__main__':
     parser.add_argument('-proj1', '--projection1', help='Graph Embedding * Rel Emb ', default=False) # 1
     parser.add_argument('-proj2', '--projection2', help='Graph Embedding * |Rel Emb - |Head - Tail| |', default=False)
     parser.add_argument('-t', '--tail_only', help='Use only the tail embedding', default=False)
-    parser.add_argument('-out', '--out', help='Out path where rule instantiations saved', default='_paths_context_0_hop_1')
+    parser.add_argument('-out', '--out', help='Out path where rule instantiations saved', default='_paths')
 
     # Get the device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
