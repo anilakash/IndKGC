@@ -1,6 +1,7 @@
 # IndKGC: Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis #
 
-This is the official implemetation of the paper Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis. The CompGCN convolution layers are used from the official implementation of CompGCN paper (https://github.com/malllabiisc/CompGCN).Thanks to the authors of CompGCN for sharing the updated code-base. 
+This is the official implemetation of the paper Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis. The CompGCN convolution layers are used from the official implementation of CompGCN paper (https://github.com/malllabiisc/CompGCN).
+Thanks to the authors of CompGCN for sharing the updated code-base. 
 
 Authors:
 [Akash Anil, Victor Gutierrez Basulto, Yazmín Ibáñez-García, Steven Schockaert]
