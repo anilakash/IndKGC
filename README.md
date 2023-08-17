@@ -1,7 +1,6 @@
 # IndKGC: Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis #
 
-This is the official implemetation of the paper Inductive Knowledge Graph Completion with GNNs and Rules:An Analysis. The CompGCN convolution layers are used from the official implementation of CompGCN paper (https://github.com/malllabiisc/CompGCN).
-Thanks to the authors of CompGCN for sharing the updated code-base. 
+This is the official implemetation of the paper [Inductive Knowledge Graph Completion with GNNs and Rules: An Analysis](https://arxiv.org/abs/2308.07942). This paper exloits [RGCN](https://arxiv.org/abs/1703.06103) and [CompGCN](https://arxiv.org/abs/1911.03082) as GNNs and [AnyBURL](https://web.informatik.uni-mannheim.de/AnyBURL/meilicke19anyburl.pdf) as rule learner. The CompGCN convolution layers are used from the official implementation of [CompGCN paper](https://github.com/malllabiisc/CompGCN). Thanks to the authors of CompGCN for sharing the updated code-base. 
 
 Authors:
 [Akash Anil, Victor Gutierrez Basulto, Yazmín Ibáñez-García, Steven Schockaert]
@@ -63,9 +62,11 @@ d. The NBFNet evaluation can be obtained by running [NBFNet](https://github.com/
 
 If you make use of this code in your work, please cite the following paper:
 
-	@article{IndKGC,
-	  title={Inductive Knowledge Graph Completion with GNN and Rule: An Analysis},
-	  author={Akash Anil, Victor Gutierrez Basulto, Yazmín Ibáñez-García, Steven Schockaert},
-	  journal={Arxiv.},
-	  year={2023}
+	@misc{anil2023inductive,
+	      title={Inductive Knowledge Graph Completion with GNNs and Rules: An Analysis}, 
+	      author={Akash Anil and Víctor Gutiérrez-Basulto and Yazmín Ibañéz-García and Steven Schockaert},
+	      year={2023},
+	      eprint={2308.07942},
+	      archivePrefix={arXiv},
+	      primaryClass={cs.AI}
 	}
